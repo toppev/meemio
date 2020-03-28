@@ -1,7 +1,7 @@
 package dev.toppe.meemio.model
 
 import com.fasterxml.jackson.annotation.JsonValue
-import javax.persistence.*
+import javax.persistence.Embeddable
 
 @Embeddable
 data class Notification(

@@ -1,21 +1,24 @@
 package dev.toppe.meemio.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 @Entity
-data class Post(
+class Post(
 
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.MERGE])
         @JoinColumn(nullable = false)
         val user: User,
 
-        @ManyToMany
-        var liked: MutableSet<User> = mutableSetOf(),
-
-        @ManyToMany
-        var disliked: MutableSet<User> = mutableSetOf(),
-
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long = 0
+        val id: Long = 0,
+
+        // Only count likes and dislikes here
+        // The User entity has their likes and dislikes
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        var likes: Int = 0,
+
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        var dislikes: Int = 0
 )

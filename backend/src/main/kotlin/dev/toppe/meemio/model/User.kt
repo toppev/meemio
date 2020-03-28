@@ -4,25 +4,29 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 @Entity
-data class User(
+class User(
         @Column(nullable = false)
         val username: String,
 
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         @Column(nullable = false)
-        val password: String,
+        val password: String = "",
 
+        @Column(updatable = false) // can not be updated
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY) // just to be sure
         @Enumerated(EnumType.STRING)
         @ElementCollection(targetClass = Role::class)
         val roles: MutableSet<Role> = mutableSetOf(Role.USER),
 
-        @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        @OneToMany(mappedBy = "user", orphanRemoval = true)
         val posts: MutableSet<Post> = mutableSetOf(),
 
         /**
          * Users following this user
          */
-        @ManyToMany
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(
                 joinColumns = [JoinColumn(name = "userId")],
                 inverseJoinColumns = [JoinColumn(name = "followerId")]
@@ -32,21 +36,21 @@ data class User(
         /**
          * Users this user is following
          */
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(
                 joinColumns = [JoinColumn(name = "followerId")],
                 inverseJoinColumns = [JoinColumn(name = "userId")]
         )
         val following: MutableSet<User> = mutableSetOf(),
 
-        @ManyToMany(mappedBy = "liked")
+        @ElementCollection(fetch = FetchType.LAZY)
+        var notifications: MutableList<Notification> = mutableListOf(),
+
+        @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
         var likedPosts: MutableSet<Post> = mutableSetOf(),
 
-        @ManyToMany(mappedBy = "disliked")
+        @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
         var dislikedPosts: MutableSet<Post> = mutableSetOf(),
-
-        @ElementCollection
-        var notifications: MutableList<Notification> = mutableListOf(),
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
