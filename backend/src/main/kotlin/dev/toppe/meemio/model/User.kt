@@ -45,6 +45,9 @@ data class User(
         @ManyToMany(mappedBy = "disliked")
         var dislikedPosts: MutableSet<Post> = mutableSetOf(),
 
+        @ElementCollection
+        var notifications: MutableList<Notification> = mutableListOf(),
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0
