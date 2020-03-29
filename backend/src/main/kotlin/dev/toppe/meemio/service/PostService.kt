@@ -5,7 +5,6 @@ import dev.toppe.meemio.model.Post
 import dev.toppe.meemio.model.User
 import dev.toppe.meemio.repository.PostRepository
 import dev.toppe.meemio.repository.UserRepository
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 
@@ -20,11 +19,18 @@ class PostService(
         return post.user.id == user.id
     }
 
+    fun createPost(post: Post, user: User) {
+        post.user = user
+        user.posts.add(post)
+        postRepository.save(post)
+        userRepository.save(user)
+    }
+
     /**
      * Remove the user from the post's dislikes and add the user in the post's likes.
      * Sends a notification to the post owner depending on the like count
      */
-    fun likePost(post: Post, user: User = (SecurityContextHolder.getContext().authentication.principal as CurrentUser).user) {
+    fun likePost(post: Post, user: User = getCurrentUser()) {
         removeReaction(post, user)
         if (user.likedPosts.add(post)) {
             post.likes++
@@ -48,7 +54,7 @@ class PostService(
     /**
      * Add the user in the post's dislikes and remove from the likes
      */
-    fun dislikePost(post: Post, user: User = (SecurityContextHolder.getContext().authentication.principal as CurrentUser).user) {
+    fun dislikePost(post: Post, user: User = getCurrentUser()) {
         removeReaction(post, user)
         if (user.dislikedPosts.add(post)) {
             println(user.dislikedPosts)
@@ -61,12 +67,25 @@ class PostService(
     /**
      * Remove the user from the likes or dislikes. Does not save changes
      */
-    fun removeReaction(post: Post, user: User = (SecurityContextHolder.getContext().authentication.principal as CurrentUser).user) {
+    fun removeReaction(post: Post, user: User = getCurrentUser()) {
         if (user.dislikedPosts.remove(post)) {
             post.dislikes--
         }
         if (user.likedPosts.remove(post)) {
             post.likes--
         }
+    }
+
+    fun nextPosts(limit: Int): Collection<Post> {
+        val user: User = getCurrentUser()
+        val excludePosts = (user.likedPosts + user.dislikedPosts + user.posts).map { it.id }.toMutableList()
+        // Never empty, "IN ()" doesn't work
+        // see postRepository docs
+        excludePosts.ifEmpty {
+            excludePosts.add(-1)
+        }
+        val followingPosts = postRepository.findTop10ByUserInAndIdNotInOrderByLikesDescCreatedDesc(user.followers.toList(), excludePosts)
+        val globalPosts = postRepository.findTop10ByCreatedAfterAndIdNotInOrderByLikesDescCreatedDesc(ids = excludePosts)
+        return (followingPosts + globalPosts).take(limit)
     }
 }

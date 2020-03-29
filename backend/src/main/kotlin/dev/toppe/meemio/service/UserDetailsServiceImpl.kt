@@ -3,6 +3,7 @@ package dev.toppe.meemio.service
 import dev.toppe.meemio.model.User
 import dev.toppe.meemio.repository.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -31,3 +32,5 @@ class CurrentUser(
         authorities: List<SimpleGrantedAuthority>,
         val user: User
 ) : SimpleUserDetails(username, password, authorities)
+
+fun getCurrentUser() = (SecurityContextHolder.getContext().authentication.principal as CurrentUser).user

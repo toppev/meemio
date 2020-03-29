@@ -52,6 +52,9 @@ class User(
         @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
         var dislikedPosts: MutableSet<Post> = mutableSetOf(),
 
+        @ManyToOne
+        var avatar: Media? = null,
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0
