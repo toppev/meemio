@@ -4,20 +4,16 @@ import dev.toppe.meemio.model.Post
 import dev.toppe.meemio.model.User
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
-import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.data.rest.core.annotation.RestResource
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-@PreAuthorize("hasRole('ROLE_USER')")
-@RepositoryRestResource(collectionResourceRel = "posts", path = "posts")
+@RepositoryRestResource
 interface PostRepository : PagingAndSortingRepository<Post, Long> {
 
-    @PreAuthorize("@postService.isPostOwner(#entity, authentication.principal.user)")
-    override fun delete(entity: Post)
-
-    @PreAuthorize("@postService.isPostOwner(#entity, authentication.principal.user)")
-    override fun <S : Post?> save(entity: S): S
+    @RestResource
+    override fun findById(id: Long): Optional<Post>
 
     /**
      * @param ids the post ids to exclude. Should not be empty (might break it), instead use -1

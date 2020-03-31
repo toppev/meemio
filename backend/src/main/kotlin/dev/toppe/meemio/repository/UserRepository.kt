@@ -3,19 +3,15 @@ package dev.toppe.meemio.repository
 import dev.toppe.meemio.model.User
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
-import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.data.rest.core.annotation.RestResource
+import java.util.*
 
-@PreAuthorize("hasRole('ROLE_USER')")
-@RepositoryRestResource(collectionResourceRel = "users", path = "users")
+@RepositoryRestResource
 interface UserRepository : PagingAndSortingRepository<User, Long> {
 
-    @PreAuthorize("#entity.id == authentication.principal.user.id")
-    override fun delete(entity: User)
-
-    @PreAuthorize("#entity.id == authentication.principal.user.id")
-    override fun <S : User?> save(entity: S): S
+    @RestResource
+    override fun findById(id: Long): Optional<User>
 
     fun findByUsername(username: String): User?
-
 
 }

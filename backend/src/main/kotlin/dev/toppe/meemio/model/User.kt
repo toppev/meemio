@@ -12,8 +12,7 @@ class User(
         @Column(nullable = false)
         val password: String = "",
 
-        @Column(updatable = false) // can not be updated
-        @JsonProperty(access = JsonProperty.Access.READ_ONLY) // just to be sure
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         @Enumerated(EnumType.STRING)
         @ElementCollection(targetClass = Role::class)
         val roles: MutableSet<Role> = mutableSetOf(Role.USER),
@@ -26,30 +25,26 @@ class User(
          * Users following this user
          */
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-        @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(
-                joinColumns = [JoinColumn(name = "userId")],
-                inverseJoinColumns = [JoinColumn(name = "followerId")]
-        )
+        @ManyToMany(mappedBy = "following", cascade = [CascadeType.ALL])
         val followers: MutableSet<User> = mutableSetOf(),
 
         /**
          * Users this user is following
          */
-        @ManyToMany(fetch = FetchType.LAZY)
+        @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
         @JoinTable(
                 joinColumns = [JoinColumn(name = "followerId")],
                 inverseJoinColumns = [JoinColumn(name = "userId")]
         )
         val following: MutableSet<User> = mutableSetOf(),
 
-        @ElementCollection(fetch = FetchType.LAZY)
+        @ElementCollection
         var notifications: MutableList<Notification> = mutableListOf(),
 
-        @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+        @OneToMany
         var likedPosts: MutableSet<Post> = mutableSetOf(),
 
-        @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+        @OneToMany
         var dislikedPosts: MutableSet<Post> = mutableSetOf(),
 
         @ManyToOne

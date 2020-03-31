@@ -25,12 +25,16 @@ class UserDetailsServiceImpl(private val userRepository: UserRepository) : UserD
 
 /**
  * Adds user field to org.springframework.security.core.userdetails.User
+ *
  */
 class CurrentUser(
         username: String?,
         password: String?,
         authorities: List<SimpleGrantedAuthority>,
+        /** Warning: lazy attributes may not work well */
         val user: User
 ) : SimpleUserDetails(username, password, authorities)
 
+
+/** Warning: lazy attributes may not work well */
 fun getCurrentUser() = (SecurityContextHolder.getContext().authentication.principal as CurrentUser).user
