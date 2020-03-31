@@ -25,6 +25,6 @@ enum class UploadType {
     ;
 
     companion object {
-        fun parse(str: String) = values().find { str.equals(it.toString(), false) }
+        fun parse(str: String) = values().find { str.equals(it.toString(), true) }
     }
 }

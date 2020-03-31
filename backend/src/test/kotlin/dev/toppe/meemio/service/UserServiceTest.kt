@@ -51,13 +51,14 @@ internal class UserServiceTest(
     fun followAndUnfollow() {
         val follower = User("user")
         userRepository.save(follower)
-        val toFollow = User("user2")
+        var toFollow = User("user2")
         userRepository.save(toFollow)
 
         userService.follow(toFollow.id, follower)
-        assertEquals(toFollow, userRepository.findById(follower.id).get().following.first())
+        toFollow = userRepository.findById(toFollow.id).get()
+        assertEquals(toFollow.id, userRepository.findById(follower.id).get().following.first().id)
         assertTrue(toFollow.notifications.isNotEmpty())
-        assertEquals(follower, userRepository.findById(toFollow.id).get().followers.first())
+        assertEquals(follower.id, userRepository.findById(toFollow.id).get().followers.first().id)
 
         userService.unfollow(toFollow.id, follower)
         assertTrue(userRepository.findById(follower.id).get().following.isEmpty())

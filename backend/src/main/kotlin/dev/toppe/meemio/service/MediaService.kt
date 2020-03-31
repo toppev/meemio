@@ -1,15 +1,16 @@
 package dev.toppe.meemio.service
 
 import dev.toppe.meemio.model.Media
-import dev.toppe.meemio.model.Post
 import dev.toppe.meemio.model.UploadType
 import dev.toppe.meemio.model.User
 import dev.toppe.meemio.repository.MediaRepository
 import dev.toppe.meemio.repository.UserRepository
 import javassist.NotFoundException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class MediaService(
         val mediaRepository: MediaRepository,
         val userRepository: UserRepository,
@@ -21,17 +22,9 @@ class MediaService(
         return fileStoreService.readBytes(mediaId.toString()) ?: throw NotFoundException("media $mediaId")
     }
 
-    fun store(byteArray: ByteArray, uploadType: UploadType?, user: User = getCurrentUser()) {
+    fun store(byteArray: ByteArray, uploadType: UploadType?, user: User = getCurrentUser()): Media {
         val media = mediaRepository.save(Media(user, uploadType))
-        when (uploadType) {
-            UploadType.POST -> {
-                postService.createPost(Post(user, media = media), user)
-            }
-            UploadType.AVATAR -> {
-                user.avatar = media
-                userRepository.save(user)
-            }
-        }
         fileStoreService.storeBytes(media.id.toString(), byteArray)
+        return media
     }
 }

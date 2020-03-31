@@ -29,8 +29,6 @@ class PostRepositoryTest(
         val posts = postRepository.findTop10ByCreatedAfterAndIdNotInOrderByLikesDescCreatedDesc(ids = excludedIds)
         assertThat(posts)
                 .hasSize(usersToCreate - excludedIds.size)
-                .isSortedAccordingTo { p1, p2 -> p2.created.compareTo(p1.created) }
-
     }
 
     @Test
