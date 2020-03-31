@@ -1,0 +1,18 @@
+@media (max-width: 480px) {
+
+  .btn-like {
+    position: absolute;
+    left: 0;
+    top: 50%;
+  }
+
+  .btn-dislike {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+
+  #mobile-navbar {
+    display: flex;
+  }
+}

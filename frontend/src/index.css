@@ -1,0 +1,162 @@
+.btn {
+  border-radius: 4em;
+  background: transparent;
+  border: 0;
+  width: 4em;
+  height: 4em;
+}
+.btn svg {
+  height: 3em;
+  width: 3em;
+}
+
+.btn-like {
+  color: rgba(87, 255, 162, 0.9);
+}
+
+.btn-dislike {
+  color: rgba(255, 59, 98, 0.9);
+}
+
+.btn-settings {
+  padding: 0;
+  position: absolute;
+  right: 1%;
+  top: 1%;
+}
+
+h2 {
+  margin: auto;
+}
+
+#mobile-navbar {
+  width: 100%;
+  height: 5em;
+  display: none;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+#header {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+#settings-btn-container {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: auto;
+  height: auto;
+}
+
+.menu-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.menu-element {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .btn-like {
+    position: absolute;
+    left: 0;
+    top: 50%;
+  }
+
+  .btn-dislike {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+
+  #mobile-navbar {
+    display: flex;
+  }
+}
+#content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  height: 80%;
+}
+
+#media-holder {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  width: auto;
+  height: 100%;
+  margin: 0;
+}
+
+#notification-container {
+  height: 80%;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-x: scroll;
+}
+#notification-container :first-child {
+  border: none;
+}
+
+.notification {
+  flex-shrink: 0;
+  height: 4em;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.85);
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+#root {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+h1 {
+  margin: 0;
+}
+
+/*# sourceMappingURL=index.css.map */
