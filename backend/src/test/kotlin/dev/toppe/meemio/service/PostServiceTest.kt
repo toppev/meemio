@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 internal class PostServiceTest(
@@ -30,7 +29,6 @@ internal class PostServiceTest(
     }
 
     @Test
-    @Transactional
     fun likePost() {
         val user = User("testuser")
         userRepository.save(user)
