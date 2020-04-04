@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class MeemioApplication
 
 fun main(args: Array<String>) {
-	runApplication<MeemioApplication>(*args)
+    runApplication<MeemioApplication>(*args)
 }
