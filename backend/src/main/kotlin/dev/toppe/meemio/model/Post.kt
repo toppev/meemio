@@ -5,7 +5,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Post (
+class Post(
 
         @ManyToOne(cascade = [CascadeType.MERGE])
         @JoinColumn(nullable = false)

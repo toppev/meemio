@@ -29,7 +29,7 @@ class UserController(
 
     @PostMapping(path = ["/avatar"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun setAvatar(@RequestPart file: MultipartFile): Media? {
-        if(file.contentType?.let { it.startsWith("image/") || it.startsWith("video/") } == true) {
+        if (file.contentType?.let { it.startsWith("image/") || it.startsWith("video/") } == true) {
             val media = mediaService.store(file.bytes, UploadType.AVATAR)
             userService.setAvatar(media)
             return media

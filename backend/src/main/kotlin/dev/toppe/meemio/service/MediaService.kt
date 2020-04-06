@@ -4,7 +4,6 @@ import dev.toppe.meemio.model.Media
 import dev.toppe.meemio.model.UploadType
 import dev.toppe.meemio.model.User
 import dev.toppe.meemio.repository.MediaRepository
-import dev.toppe.meemio.repository.UserRepository
 import javassist.NotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class MediaService(
         val mediaRepository: MediaRepository,
-        val userRepository: UserRepository,
-        val postService: PostService,
         val fileStoreService: FileStoreService
 ) {
 

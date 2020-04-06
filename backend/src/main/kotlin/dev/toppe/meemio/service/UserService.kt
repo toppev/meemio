@@ -35,9 +35,7 @@ class UserService(
     /**
      * Get all notifications
      */
-    fun getNotifications(user: User = getCurrentUser()): List<Notification> {
-        return user.notifications
-    }
+    fun getNotifications(user: User = getCurrentUser()) = user.notifications
 
     /**
      * Mark the given notification as read
@@ -54,9 +52,7 @@ class UserService(
     /**
      * Mark all notification as read
      */
-    fun markAllAsRead(user: User = getCurrentUser()) {
-        getNotifications(user).forEach { markAsRead(it, user) }
-    }
+    fun markAllAsRead(user: User = getCurrentUser()) = getNotifications(user).forEach { markAsRead(it, user) }
 
     /**
      * Follow the user and add to their followers

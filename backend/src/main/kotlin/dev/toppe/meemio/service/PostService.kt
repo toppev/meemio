@@ -18,9 +18,7 @@ class PostService(
         val userService: UserService
 ) {
 
-    fun isPostOwner(post: Post, user: User): Boolean {
-        return post.user.id == user.id
-    }
+    fun isPostOwner(post: Post, user: User) = post.user.id == user.id
 
     fun createPost(media: Media, user: User = userRepository.findById(getCurrentUser().id).get()): Post {
         val post = Post(user, media = media)

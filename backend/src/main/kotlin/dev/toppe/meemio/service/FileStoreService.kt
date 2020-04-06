@@ -10,9 +10,7 @@ class FileStoreService {
     val directory = File("uploads")
 
     @PostConstruct
-    fun init() {
-        directory.mkdirs()
-    }
+    fun init() = directory.mkdirs()
 
     fun storeBytes(name: String, byteArray: ByteArray) = File(directory, name).writeBytes(byteArray)
 

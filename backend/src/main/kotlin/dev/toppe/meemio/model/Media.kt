@@ -22,9 +22,4 @@ class Media(
 enum class UploadType {
     POST,
     AVATAR
-    ;
-
-    companion object {
-        fun parse(str: String) = values().find { str.equals(it.toString(), true) }
-    }
 }
