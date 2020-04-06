@@ -40,7 +40,7 @@ class PostService(
             postRepository.save(post)
             val likeCount = post.likes
             // Notify
-            if (likeCount < 5 || likeCount < 20 && likeCount % 5 == 0 || likeCount < 10 && likeCount % 10 == 0 || likeCount % 100 == 0) {
+            if (likeCount < 5 || likeCount < 20 && likeCount % 5 == 0 || likeCount < 100 && likeCount % 10 == 0 || likeCount % 100 == 0) {
                 userService.addNotification(
                         post.user,
                         "Your post has reached $likeCount like${if (likeCount == 1) "" else "s"}!",
