@@ -6,7 +6,8 @@
   display: none;
   justify-content: space-evenly;
   align-items: center;
-  background-color: $black-3;
+  background-color: $black--1;
+  clip-path: polygon(50% 0%, 100% 10%, 100% 100%, 0 100%, 0 10%);
 }
 
 #header {
@@ -15,7 +16,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: $black-3;
+  background: $black--1;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 90%, 0 100%, 0 0);
+
 }
 
 #settings-btn-container {
@@ -39,4 +42,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: $white-0;
 }

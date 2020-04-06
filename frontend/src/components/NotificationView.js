@@ -9,10 +9,16 @@ const NotificationView = () => {
     notificationService.getAll()
       .then(res => setNotifications(res))
   }, [])
-
+  if (notifications[0]) {
+    return (
+      <div id='notification-container'>
+        {notifications.map((n, i) => <div className='notification' key={i} >{n.content}</div>)}
+      </div>
+    )
+  }
   return (
-    <div id='notification-container'>
-      {notifications.map((n, i) => <div className='notification' key={i} >{n.content}</div>)}
+    <div >
+      <h2>No new notifications</h2>
     </div>
   )
 }
