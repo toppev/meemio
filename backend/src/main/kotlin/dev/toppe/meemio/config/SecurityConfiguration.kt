@@ -3,7 +3,6 @@ package dev.toppe.meemio.config
 import dev.toppe.meemio.service.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -27,9 +26,8 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
         http
                 .httpBasic()
                 .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/users/**").permitAll()
-                .antMatchers("/users/**").authenticated()
+                .authorizeRequests().anyRequest()
+                .authenticated()
                 .and()
                 .rememberMe()
                 .alwaysRemember(true)

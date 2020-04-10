@@ -4,15 +4,15 @@ import dev.toppe.meemio.model.Post
 import dev.toppe.meemio.model.User
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
-import org.springframework.data.rest.core.annotation.RestResource
+import org.springframework.stereotype.Repository
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-@RepositoryRestResource
+@Repository
+@RepositoryRestResource(exported = false)
 interface PostRepository : PagingAndSortingRepository<Post, Long> {
 
-    @RestResource
     override fun findById(id: Long): Optional<Post>
 
     /**
