@@ -20,7 +20,7 @@ class PostService(
 
     fun isPostOwner(post: Post, user: User) = post.user.id == user.id
 
-    fun createPost(media: Media, user: User = userRepository.findById(getCurrentUser().id).get()): Post {
+    fun createPost(media: Media, user: User = userService.getSelf().get()): Post {
         val post = Post(user, media = media)
         post.user = user
         user.posts.add(post)
@@ -32,8 +32,7 @@ class PostService(
      * Remove the user from the post's dislikes and add the user in the post's likes.
      * Sends a notification to the post owner depending on the like count
      */
-    // FIXME: hacky, the authenticated user is not proxied so lazy fields don't work
-    fun likePost(post: Post, user: User = userRepository.findById(getCurrentUser().id).get()) {
+    fun likePost(post: Post, user: User = userService.getSelf().get()) {
         removeReaction(post, user)
         if (user.likedPosts.add(post)) {
             post.likes++
@@ -57,7 +56,7 @@ class PostService(
     /**
      * Add the user in the post's dislikes and remove from the likes
      */
-    fun dislikePost(post: Post, user: User = userRepository.findById(getCurrentUser().id).get()) {
+    fun dislikePost(post: Post, user: User = userService.getSelf().get()) {
         removeReaction(post, user)
         if (user.dislikedPosts.add(post)) {
             println(user.dislikedPosts)
@@ -80,13 +79,11 @@ class PostService(
     }
 
     fun nextPosts(limit: Int): Collection<Post> {
-        val user: User = userRepository.findById(getCurrentUser().id).get()
+        val user: User = userService.getSelf().get()
         val excludePosts = (user.likedPosts + user.dislikedPosts + user.posts).map { it.id }.toMutableList()
-        // Never empty, "IN ()" doesn't work
+        // Never empty, "IN ()" in a SQL query doesn't work
         // see postRepository docs
-        excludePosts.ifEmpty {
-            excludePosts.add(-1)
-        }
+        excludePosts.ifEmpty { excludePosts.add(-1) }
         val followingPosts = postRepository.findTop10ByUserInAndIdNotInOrderByLikesDescCreatedDesc(user.following.toList(), excludePosts)
         val globalPosts = postRepository.findTop10ByCreatedAfterAndIdNotInOrderByLikesDescCreatedDesc(ids = excludePosts)
         return (followingPosts + globalPosts).take(limit)

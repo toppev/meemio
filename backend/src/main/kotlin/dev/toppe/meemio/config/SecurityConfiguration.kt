@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 
 
 @Configuration
@@ -26,7 +25,8 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
         http
                 .httpBasic()
                 .and()
-                .authorizeRequests().anyRequest()
+                .authorizeRequests()
+                .anyRequest()
                 .authenticated()
                 .and()
                 .rememberMe()
@@ -42,7 +42,5 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder() = BCryptPasswordEncoder()
 }

@@ -21,6 +21,12 @@ class UserController(
     @PostMapping(path = ["/register"])
     fun register(@RequestBody body: CredentialsBody) = userService.createAccount(body.username, body.password)
 
+    /**
+     * Just returns the user, use Basic Authentication to login
+     */
+    @PostMapping(path = ["/login"])
+    fun login() = userService.getSelf()
+
     @PostMapping(path = ["/{userId}/follow"])
     fun followUser(@PathVariable userId: Long) = userService.follow(userId)
 

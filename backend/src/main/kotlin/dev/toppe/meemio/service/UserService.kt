@@ -58,7 +58,7 @@ class UserService(
      * Follow the user and add to their followers
      * @throws NotFoundException (404) if the user was not found
      */
-    fun follow(toFollowId: Long, user: User = userRepository.findById(getCurrentUser().id).get()) {
+    fun follow(toFollowId: Long, user: User = getSelf().get()) {
         val toFollow = userRepository.findById(toFollowId).orElseThrow { NotFoundException("user $toFollowId") }
         if (user.following.add(toFollow)) {
             userRepository.save(user)
@@ -73,7 +73,7 @@ class UserService(
      * Unfollow the user and remove from their followers
      * @throws NotFoundException (404) if the user was not found
      */
-    fun unfollow(unfollowId: Long, user: User = userRepository.findById(getCurrentUser().id).get()) {
+    fun unfollow(unfollowId: Long, user: User = getSelf().get()) {
         userRepository.findById(unfollowId).orElseThrow { NotFoundException("user $unfollowId") }.let { unfollow ->
             if (user.following.remove(unfollow)) {
                 userRepository.save(user)
@@ -84,17 +84,24 @@ class UserService(
         }
     }
 
+    /**
+     * Create a new account
+     * @throws InvalidUsername if the username is taken or invalid
+     */
     fun createAccount(username: String, password: String): User {
         if (userRepository.findByUsername(username) != null) {
             throw InvalidUsername("username taken")
         }
-        val user = User(username, passwordEncoder.encode(password))
-        return userRepository.save(user)
+        return User(username, passwordEncoder.encode(password)).let { userRepository.save(it) }
     }
 
-    fun setAvatar(media: Media, user: User = getCurrentUser()) {
-        user.avatar = media
-        userRepository.save(user)
-    }
+    /**
+     *  Set the avatar and save the user
+     */
+    fun setAvatar(media: Media, user: User = getCurrentUser()) = userRepository.save(user.also { user.avatar = media })
 
+    /**
+     *  Get the current user
+     */
+    fun getSelf() = userRepository.findById(getCurrentUser().id)
 }

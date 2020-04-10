@@ -16,7 +16,8 @@ class MediaService(
 ) {
 
     fun readFile(mediaId: Long): ByteArray {
-        return fileStoreService.readBytes(mediaId.toString()) ?: throw NotFoundException("media ($mediaId) was not found")
+        return fileStoreService.readBytes(mediaId.toString())
+                ?: throw NotFoundException("media ($mediaId) was not found")
     }
 
     fun store(byteArray: ByteArray, uploadType: UploadType?, user: User = getCurrentUser()): Media {
