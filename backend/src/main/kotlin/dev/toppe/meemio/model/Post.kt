@@ -2,6 +2,7 @@ package dev.toppe.meemio.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -23,6 +24,9 @@ class Post(
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         var dislikes: Int = 0,
+
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        var created: Date = Date(Calendar.getInstance().time.time),
 
         @ManyToOne
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)

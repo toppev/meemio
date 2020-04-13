@@ -1,7 +1,8 @@
 package dev.toppe.meemio.service
 
-import dev.toppe.meemio.InvalidUsername
+import dev.toppe.meemio.InvalidUsernameException
 import dev.toppe.meemio.NotFoundException
+import dev.toppe.meemio.UsernameTakenException
 import dev.toppe.meemio.model.Media
 import dev.toppe.meemio.model.Notification
 import dev.toppe.meemio.model.NotificationActionType
@@ -86,11 +87,14 @@ class UserService(
 
     /**
      * Create a new account
-     * @throws InvalidUsername if the username is taken or invalid
+     * @throws UsernameTakenException if the username is taken
      */
     fun createAccount(username: String, password: String): User {
+        if(username.length < 3 || !Regex("^[a-zA-Z0-9_]+$").matches(username)) {
+            throw InvalidUsernameException("$username is not a valid username: must be at least 3 alphanumeric characters, underscores are allowed")
+        }
         if (userRepository.findByUsername(username) != null) {
-            throw InvalidUsername("username taken")
+            throw UsernameTakenException("username taken")
         }
         return User(username, passwordEncoder.encode(password)).let { userRepository.save(it) }
     }
