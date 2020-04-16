@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class PostService(
-        val postRepository: PostRepository,
-        val userRepository: UserRepository,
-        val userService: UserService
+        private val postRepository: PostRepository,
+        private val userRepository: UserRepository,
+        private val userService: UserService
 ) {
 
     fun isPostOwner(post: Post, user: User) = post.user.id == user.id
@@ -48,7 +48,6 @@ class PostService(
                 )
                 return
             }
-            // Was not saved yet
             userRepository.save(user)
         }
     }

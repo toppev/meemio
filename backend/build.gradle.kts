@@ -42,7 +42,7 @@ dependencies {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 	runtimeOnly("mysql:mysql-connector-java")
-	testRuntimeOnly("com.h2database:h2")
+	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.security:spring-security-test")
 }
 

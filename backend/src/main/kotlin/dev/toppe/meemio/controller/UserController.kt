@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping(path = ["/user"])
 class UserController(
-        val userService: UserService,
-        val mediaService: MediaService
+        private val userService: UserService,
+        private val mediaService: MediaService
 ) {
 
     @ResponseStatus(HttpStatus.CREATED)

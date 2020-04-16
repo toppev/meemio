@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(path = ["/media"])
 class MediaController(
-        val mediaService: MediaService
+        private val mediaService: MediaService
 ) {
 
     @GetMapping(path = ["/{mediaId}"], produces = [MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE])

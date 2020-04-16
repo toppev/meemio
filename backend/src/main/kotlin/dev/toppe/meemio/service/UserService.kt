@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class UserService(
-        val userRepository: UserRepository,
-        val passwordEncoder: PasswordEncoder
+        private val userRepository: UserRepository,
+        private val passwordEncoder: PasswordEncoder
 ) {
 
     /**
