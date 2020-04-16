@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping(path = ["/user"])
 class UserController(
-        private val userService: UserService,
-        private val mediaService: MediaService
+        val userService: UserService,
+        val mediaService: MediaService
 ) {
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -24,6 +24,7 @@ class UserController(
     /**
      * Just returns the user, use Basic Authentication to login
      */
+    @GetMapping(path = ["/login"])
     @PostMapping(path = ["/login"])
     fun login() = userService.getSelf()
 

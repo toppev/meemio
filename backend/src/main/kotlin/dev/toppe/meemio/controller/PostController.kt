@@ -13,9 +13,9 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping(path = ["/post"])
 class PostController(
-        private val postService: PostService,
-        private val postRepository: PostRepository,
-        private val mediaService: MediaService
+        val postService: PostService,
+        val postRepository: PostRepository,
+        val mediaService: MediaService
 ) {
 
     data class PostResponse(val postIds: List<Long>)
