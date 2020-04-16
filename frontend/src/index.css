@@ -18,14 +18,6 @@
   color: rgba(255, 59, 98, 0.95);
 }
 
-.btn-settings {
-  padding: 0;
-  position: absolute;
-  right: 1%;
-  top: 1%;
-  color: rgba(255, 255, 255, 0.9);
-}
-
 #mobile-navbar {
   width: 100%;
   height: 5em;
@@ -131,6 +123,7 @@ img {
   align-items: center;
   font-size: 18px;
   border-top: 1px solid rgba(0, 0, 0, 0.85);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 body {
@@ -158,7 +151,11 @@ body {
 
 h1 {
   margin: 0;
-  color: rgba(255, 255, 255, 0.9);
+  font-family: "Dancing Script", cursive;
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, purple);
+  background-clip: text;
+  color: transparent;
+  font-size: 3em;
 }
 
 h2 {
