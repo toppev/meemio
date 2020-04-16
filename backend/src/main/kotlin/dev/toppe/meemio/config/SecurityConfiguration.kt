@@ -28,7 +28,7 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
                 .and()
                 .authorizeRequests()
                 .anyRequest()
-                .permitAll()
+                .authenticated()
                 .and()
                 .rememberMe()
                 .alwaysRemember(true)
