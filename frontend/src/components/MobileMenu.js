@@ -3,7 +3,7 @@ import React from 'react'
 import { IoIosNotifications, IoIosHome, IoIosPerson } from 'react-icons/io'
 import { Button } from './Button'
 
-const MobileMenu = ({ route }) => {
+const MobileMenu = ({ route, pfp }) => {
 
   return (
     <div className='mobile-specific' id='mobile-navbar'>
@@ -18,7 +18,9 @@ const MobileMenu = ({ route }) => {
         type='menu-element'
       />
       <Button
-        content={<IoIosPerson />}
+        content={pfp
+          ? null
+          : <IoIosPerson />}
         onClick={() => route('/profile')}
         type='menu-element'
       />
