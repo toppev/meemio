@@ -1,15 +1,16 @@
 package dev.toppe.meemio.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 import javax.persistence.*
 
 @Entity
-class Post (
+class Post(
 
-        @ManyToOne(cascade = [CascadeType.MERGE])
+        @ManyToOne
         @JoinColumn(nullable = false)
-        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        @JsonIgnore
         var user: User,
 
         @Id
@@ -28,6 +29,12 @@ class Post (
         var created: Date = Date(Calendar.getInstance().time.time),
 
         @ManyToOne
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         var media: Media? = null
+) {
+    @JsonProperty(value = "username")
+    fun getUsername() = user.username
 
-)
+    @JsonProperty(value = "userId")
+    fun getUserId() = user.id
+}

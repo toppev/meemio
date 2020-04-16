@@ -3,6 +3,7 @@ package dev.toppe.meemio.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
+
 @Entity
 class User(
         @Column(nullable = false)

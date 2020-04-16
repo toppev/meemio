@@ -1,7 +1,8 @@
 package dev.toppe.meemio.service
 
-import dev.toppe.meemio.InvalidUsername
+import dev.toppe.meemio.InvalidUsernameException
 import dev.toppe.meemio.NotFoundException
+import dev.toppe.meemio.UsernameTakenException
 import dev.toppe.meemio.model.Media
 import dev.toppe.meemio.model.Notification
 import dev.toppe.meemio.model.NotificationActionType
@@ -35,9 +36,7 @@ class UserService(
     /**
      * Get all notifications
      */
-    fun getNotifications(user: User = getCurrentUser()): List<Notification> {
-        return user.notifications
-    }
+    fun getNotifications(user: User = getCurrentUser()) = user.notifications
 
     /**
      * Mark the given notification as read
@@ -54,15 +53,13 @@ class UserService(
     /**
      * Mark all notification as read
      */
-    fun markAllAsRead(user: User = getCurrentUser()) {
-        getNotifications(user).forEach { markAsRead(it, user) }
-    }
+    fun markAllAsRead(user: User = getCurrentUser()) = getNotifications(user).forEach { markAsRead(it, user) }
 
     /**
      * Follow the user and add to their followers
      * @throws NotFoundException (404) if the user was not found
      */
-    fun follow(toFollowId: Long, user: User = userRepository.findById(getCurrentUser().id).get()) {
+    fun follow(toFollowId: Long, user: User = getSelf().get()) {
         val toFollow = userRepository.findById(toFollowId).orElseThrow { NotFoundException("user $toFollowId") }
         if (user.following.add(toFollow)) {
             userRepository.save(user)
@@ -77,7 +74,7 @@ class UserService(
      * Unfollow the user and remove from their followers
      * @throws NotFoundException (404) if the user was not found
      */
-    fun unfollow(unfollowId: Long, user: User = userRepository.findById(getCurrentUser().id).get()) {
+    fun unfollow(unfollowId: Long, user: User = getSelf().get()) {
         userRepository.findById(unfollowId).orElseThrow { NotFoundException("user $unfollowId") }.let { unfollow ->
             if (user.following.remove(unfollow)) {
                 userRepository.save(user)
@@ -88,17 +85,27 @@ class UserService(
         }
     }
 
+    /**
+     * Create a new account
+     * @throws UsernameTakenException if the username is taken
+     */
     fun createAccount(username: String, password: String): User {
-        if (userRepository.findByUsername(username) != null) {
-            throw InvalidUsername("username taken")
+        if(username.length < 3 || !Regex("^[a-zA-Z0-9_]+$").matches(username)) {
+            throw InvalidUsernameException("$username is not a valid username: must be at least 3 alphanumeric characters, underscores are allowed")
         }
-        val user = User(username, passwordEncoder.encode(password))
-        return userRepository.save(user)
+        if (userRepository.findByUsername(username) != null) {
+            throw UsernameTakenException("username taken")
+        }
+        return User(username, passwordEncoder.encode(password)).let { userRepository.save(it) }
     }
 
-    fun setAvatar(media: Media, user: User = getCurrentUser()) {
-        user.avatar = media
-        userRepository.save(user)
-    }
+    /**
+     *  Set the avatar and save the user
+     */
+    fun setAvatar(media: Media, user: User = getCurrentUser()) = userRepository.save(user.also { user.avatar = media })
 
+    /**
+     *  Get the current user
+     */
+    fun getSelf() = userRepository.findById(getCurrentUser().id)
 }

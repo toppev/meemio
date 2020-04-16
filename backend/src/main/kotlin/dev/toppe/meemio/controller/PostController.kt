@@ -55,6 +55,6 @@ class PostController(
     }
 
     @GetMapping(path = ["/next"])
-    fun nextPosts(@RequestParam limit: Int) = postService.nextPosts(if (limit > 0) limit else 5)
+    fun nextPosts(@RequestParam limit: Int?) = postService.nextPosts(limit ?: 5)
 
 }

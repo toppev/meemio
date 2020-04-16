@@ -1,5 +1,6 @@
 package dev.toppe.meemio.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 import javax.persistence.*
 
@@ -8,6 +9,7 @@ class Media(
 
         @ManyToOne
         @JoinColumn
+        @JsonIgnore
         val user: User,
 
         var uploadType: UploadType?,
@@ -22,9 +24,4 @@ class Media(
 enum class UploadType {
     POST,
     AVATAR
-    ;
-
-    companion object {
-        fun parse(str: String) = values().find { str.equals(it.toString(), true) }
-    }
 }
