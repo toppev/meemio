@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class MediaService(
-        private val mediaRepository: MediaRepository,
-        private val fileStoreService: FileStoreService
+        val mediaRepository: MediaRepository,
+        val fileStoreService: FileStoreService
 ) {
 
     fun readFile(mediaId: Long): ByteArray {
