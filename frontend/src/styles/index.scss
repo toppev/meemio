@@ -4,7 +4,8 @@
 @use "./menus"as menus;
 @use "./queries"as queries;
 @use "./home-page"as home;
-@use "./notification-page"as notification;
+@use "./notification-page"as notifications;
+@use "./notification"as notification;
 
 body {
   margin: 0;
@@ -17,6 +18,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#app-wrapper {
+  height: 100%;
+  width: 100%;
 }
 
 #app-container {
