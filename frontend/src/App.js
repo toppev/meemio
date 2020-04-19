@@ -6,19 +6,22 @@ import { MobileMenu } from './components/MobileMenu'
 import { Header } from './components/Header'
 import { NotificationView } from './components/NotificationView'
 import { Notification } from './components/Notification'
+import { CreatePostView } from './components/CreatePostView'
 
 import { memeService } from './services/memes'
+import { userService } from './services/user'
+
 
 import './index.css'
 
 // WIP
-import { Login } from './components/Login'
+//import { Login } from './components/Login'
 
 const App = () => {
 
   const [memes, setMemes] = useState([])
   const [currentMeme, setCurrentMeme] = useState(0)
-  const [user, setUser] = useState(true)
+  //const [user, setUser] = useState(true)
   const [notification, setNotification] = useState({ message: null, success: true })
 
   const history = useHistory()
@@ -26,15 +29,19 @@ const App = () => {
   useEffect(() => {
     memeService.getAll()
       .then(res => setMemes(res))
-
   }, [])
 
   const route = (dest) => {
     history.push(dest)
   }
 
-  const login = async (un, pw) => {
-    console.log(un, pw)
+  const login = async () => {
+    try {
+      const they = await userService.login('asd', 'asd')
+      console.log(they)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const like = () => {
@@ -46,6 +53,7 @@ const App = () => {
     setCurrentMeme(currentMeme + 1)
 
   }
+  login()
 
   return (
     <div id='app-wrapper'>
@@ -61,6 +69,9 @@ const App = () => {
               meme={memes[currentMeme].meme} like={like} dislike={dislike} />
             : null
           }
+        </Route>
+        <Route path='/create'>
+          <CreatePostView />
         </Route>
         <Route path='/notifications'>
           <NotificationView />

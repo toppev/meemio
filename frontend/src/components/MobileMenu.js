@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IoIosNotifications, IoIosHome, IoIosPerson } from 'react-icons/io'
+import { IoIosNotifications, IoIosHome, IoIosPerson, IoIosAddCircle, IoIosAdd } from 'react-icons/io'
 import { Button } from './Button'
 
 const MobileMenu = ({ route, pfp }) => {
@@ -15,6 +15,11 @@ const MobileMenu = ({ route, pfp }) => {
       <Button
         content={<IoIosHome />}
         onClick={() => route('/')}
+        type='menu-element'
+      />
+      <Button
+        content={<IoIosAddCircle />}
+        onClick={() => route('/create')}
         type='menu-element'
       />
       <Button
