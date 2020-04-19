@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.cors.CorsConfiguration
 
 
 @Configuration
@@ -24,6 +25,13 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
 
     override fun configure(http: HttpSecurity) {
         http
+                .cors().configurationSource {
+                    CorsConfiguration().apply {
+                        allowedOrigins = listOf("*")
+                        allowedMethods = listOf("*")
+                    }
+                }
+                .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
@@ -31,11 +39,9 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
                 .authenticated()
                 .and()
                 .rememberMe()
-                .alwaysRemember(true)
                 // Remember for 2 weeks (default)
                 //.tokenValiditySeconds()
-                .and()
-                .csrf().disable()
+                .alwaysRemember(true)
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -44,4 +50,5 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
 
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder() as PasswordEncoder
+
 }
