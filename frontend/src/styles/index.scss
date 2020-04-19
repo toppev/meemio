@@ -2,9 +2,12 @@
 
 @use "./buttons"as buttons;
 @use "./menus"as menus;
-@use "./queries"as queries;
 @use "./home-page"as home;
-@use "./notification-page"as notification;
+@use "./notification-page"as notifications;
+@use "./notification"as notification;
+@use "./creation-view"as creation-view;
+
+@use "./queries"as queries;
 
 body {
   margin: 0;
@@ -17,6 +20,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#app-wrapper {
+  height: 100%;
+  width: 100%;
 }
 
 #app-container {
@@ -32,7 +40,11 @@ body {
 
 h1 {
   margin: 0;
-  color: $white-0;
+  font-family: 'Dancing Script', cursive;
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, purple);
+  background-clip: text;
+  color: transparent;
+  font-size: 3em;
 }
 
 h2 {

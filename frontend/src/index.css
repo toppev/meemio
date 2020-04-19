@@ -18,14 +18,6 @@
   color: rgba(255, 59, 98, 0.95);
 }
 
-.btn-settings {
-  padding: 0;
-  position: absolute;
-  right: 1%;
-  top: 1%;
-  color: rgba(255, 255, 255, 0.9);
-}
-
 #mobile-navbar {
   width: 100%;
   height: 5em;
@@ -68,24 +60,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-@media (max-width: 480px) {
-  .btn-like {
-    position: absolute;
-    left: 0;
-    top: 50%;
-  }
-
-  .btn-dislike {
-    position: absolute;
-    right: 0;
-    top: 50%;
-  }
-
-  #mobile-navbar {
-    display: flex;
-  }
-}
-#content-wrapper {
+.content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,8 +106,80 @@ img {
   align-items: center;
   font-size: 18px;
   border-top: 1px solid rgba(0, 0, 0, 0.85);
+  color: rgba(255, 255, 255, 0.85);
 }
 
+.notification {
+  z-index: 2;
+  position: absolute;
+  width: 80%;
+  height: 10%;
+  margin-left: -153px;
+  left: 50%;
+  top: 10%;
+  max-width: 306px;
+  max-height: 88px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0px 0px 40px -5px rgba(0, 0, 0, 0.73);
+  border-radius: 2px;
+}
+
+@media (max-width: 375px) {
+  .notification {
+    margin-left: -40%;
+  }
+}
+.check-circle-container {
+  height: 3em;
+  width: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.check-circle-container svg {
+  height: 100%;
+  width: 100%;
+}
+
+.success {
+  color: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(0, 173, 17, 0.9);
+  border-left: 4px solid rgba(0, 173, 17, 0.9);
+}
+.success .check-circle-container {
+  color: rgba(0, 173, 17, 0.9);
+}
+
+.error {
+  color: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 65, 18, 0.9);
+  border-left: 4px solid rgba(255, 65, 18, 0.9);
+}
+.error .check-circle-container {
+  color: rgba(255, 65, 18, 0.9);
+}
+
+.notification-text {
+  margin-left: 1.3em;
+}
+
+@media (max-width: 480px) {
+  .btn-like {
+    position: absolute;
+    left: 0;
+    top: 50%;
+  }
+
+  .btn-dislike {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+
+  #mobile-navbar {
+    display: flex;
+  }
+}
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
@@ -144,6 +191,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#app-wrapper {
+  height: 100%;
+  width: 100%;
 }
 
 #app-container {
@@ -158,7 +210,11 @@ body {
 
 h1 {
   margin: 0;
-  color: rgba(255, 255, 255, 0.9);
+  font-family: "Dancing Script", cursive;
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, purple);
+  background-clip: text;
+  color: transparent;
+  font-size: 3em;
 }
 
 h2 {

@@ -1,33 +1,82 @@
-import React from 'react'
-import { Switch, Route, Link, useHistory, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Switch, Route, useHistory } from 'react-router-dom'
 
 import { ContentWrapper } from './components/ContentWrapper'
 import { MobileMenu } from './components/MobileMenu'
 import { Header } from './components/Header'
 import { NotificationView } from './components/NotificationView'
+import { Notification } from './components/Notification'
+import { CreatePostView } from './components/CreatePostView'
+
+import { memeService } from './services/memes'
+import { userService } from './services/user'
+
 
 import './index.css'
 
+// WIP
+//import { Login } from './components/Login'
+
 const App = () => {
 
+  const [memes, setMemes] = useState([])
+  const [currentMeme, setCurrentMeme] = useState(0)
+  //const [user, setUser] = useState(true)
+  const [notification, setNotification] = useState({ message: null, success: true })
+
   const history = useHistory()
+
+  useEffect(() => {
+    memeService.getAll()
+      .then(res => setMemes(res))
+  }, [])
 
   const route = (dest) => {
     history.push(dest)
   }
-  console.log('hello?')
+
+  const login = async () => {
+    try {
+      const they = await userService.login('asd', 'asd')
+      console.log(they)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const like = () => {
+    setCurrentMeme(currentMeme + 1)
+
+  }
+
+  const dislike = () => {
+    setCurrentMeme(currentMeme + 1)
+
+  }
 
   return (
-    <div id='app-container'>
-      <Header />
-      <Switch />
-      <Route path='/' exact >
-        <ContentWrapper title='purkka' meme='https://cloetta.studio.crasman.fi/pub/web/images/tuotekuvat/PNG-kuva_1009133_Jenkki+Pro+Junior+75g+Hra+Hakkarainen.png?c=tuote' />
-      </Route>
-      <Route path='/notifications'>
-        <NotificationView />
-      </Route>
-      <MobileMenu route={route} />
+    <div id='app-wrapper'>
+      {notification.message
+        ? <Notification success={notification.success} message={notification.message} />
+        : null}
+      <div onClick={() => login()} id='app-container'>
+        <Header />
+        <Switch />
+        <Route path='/' exact >
+          {memes[currentMeme]
+            ? <ContentWrapper title={memes[currentMeme].title}
+              meme={memes[currentMeme].meme} like={like} dislike={dislike} />
+            : null
+          }
+        </Route>
+        <Route path='/create'>
+          <CreatePostView />
+        </Route>
+        <Route path='/notifications'>
+          <NotificationView />
+        </Route>
+        <MobileMenu route={route} />
+      </div>
     </div>
   )
 }
