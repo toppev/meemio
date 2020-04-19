@@ -20,13 +20,16 @@ import org.springframework.web.cors.CorsConfiguration
 class SecurityConfiguration(private val userDetailsService: UserDetailsServiceImpl) : WebSecurityConfigurerAdapter() {
 
     override fun configure(web: WebSecurity) {
-        web.ignoring().antMatchers("/csrf", "/user/register")
+        web.ignoring().antMatchers("/user/register")
     }
 
     override fun configure(http: HttpSecurity) {
         http
                 .cors().configurationSource {
-                    CorsConfiguration().apply { allowedOrigins = listOf("*") }
+                    CorsConfiguration().apply {
+                        allowedOrigins = listOf("*")
+                        allowedMethods = listOf("*")
+                    }
                 }
                 .and()
                 .httpBasic()
