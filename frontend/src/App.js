@@ -53,14 +53,13 @@ const App = () => {
     setCurrentMeme(currentMeme + 1)
 
   }
-  login()
 
   return (
     <div id='app-wrapper'>
       {notification.message
         ? <Notification success={notification.success} message={notification.message} />
         : null}
-      <div id='app-container'>
+      <div onClick={() => login()} id='app-container'>
         <Header />
         <Switch />
         <Route path='/' exact >

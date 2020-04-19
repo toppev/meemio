@@ -2,10 +2,12 @@
 
 @use "./buttons"as buttons;
 @use "./menus"as menus;
-@use "./queries"as queries;
 @use "./home-page"as home;
 @use "./notification-page"as notifications;
 @use "./notification"as notification;
+@use "./creation-view"as creation-view;
+
+@use "./queries"as queries;
 
 body {
   margin: 0;

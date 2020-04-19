@@ -6,7 +6,7 @@ import { Button } from './Button'
 const ContentWrapper = ({ meme, title, like, dislike }) => {
 
   return (
-    <div id='content-wrapper' >
+    <div className='content-wrapper' >
       <div id='media-holder'>
         <img src={meme} alt='well fuck' />
       </div>

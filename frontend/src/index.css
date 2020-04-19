@@ -60,24 +60,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-@media (max-width: 480px) {
-  .btn-like {
-    position: absolute;
-    left: 0;
-    top: 50%;
-  }
-
-  .btn-dislike {
-    position: absolute;
-    right: 0;
-    top: 50%;
-  }
-
-  #mobile-navbar {
-    display: flex;
-  }
-}
-#content-wrapper {
+.content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,6 +163,23 @@ img {
   margin-left: 1.3em;
 }
 
+@media (max-width: 480px) {
+  .btn-like {
+    position: absolute;
+    left: 0;
+    top: 50%;
+  }
+
+  .btn-dislike {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+
+  #mobile-navbar {
+    display: flex;
+  }
+}
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
