@@ -21,12 +21,13 @@ const App = () => {
 
   const [memes, setMemes] = useState([])
   const [currentMeme, setCurrentMeme] = useState(0)
-  //const [user, setUser] = useState(true)
+  const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({ message: null, success: true })
 
   const history = useHistory()
 
   useEffect(() => {
+    login()
     memeService.getAll()
       .then(res => setMemes(res))
   }, [])
@@ -37,8 +38,8 @@ const App = () => {
 
   const login = async () => {
     try {
-      const they = await userService.login('asd', 'asd')
-      console.log(they)
+      const they = await userService.login('xxd', 'lol')
+      setUser(they)
     } catch (err) {
       console.error(err)
     }
@@ -59,7 +60,7 @@ const App = () => {
       {notification.message
         ? <Notification success={notification.success} message={notification.message} />
         : null}
-      <div onClick={() => login()} id='app-container'>
+      <div id='app-container'>
         <Header />
         <Switch />
         <Route path='/' exact >

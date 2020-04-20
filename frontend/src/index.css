@@ -70,7 +70,7 @@
   height: 80%;
 }
 
-#media-holder {
+.media-holder {
   height: 90%;
   width: 100%;
   display: flex;
@@ -215,6 +215,11 @@ h1 {
   background-clip: text;
   color: transparent;
   font-size: 3em;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
 }
 
 h2 {

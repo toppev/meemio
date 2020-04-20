@@ -7,9 +7,9 @@ const CreatePostView = () => {
   const [meme, setMeme] = useState(null)
   const [title, setTitle] = useState('')
 
+
   const handleFileChange = (e) => {
     e.preventDefault()
-    console.log(e.target.files[0])
     setMeme(e.target.files[0])
   }
 
@@ -18,25 +18,35 @@ const CreatePostView = () => {
     setter(e.target.value)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-  }
-
   const cancelCreation = (e) => {
     e.preventDefault()
     setMeme(null)
     setTitle('')
   }
 
-  return (
-    <form className='content-wrapper'>
-      <input onChange={handleFileChange} multiple type="file" />
-      <input onChange={e => handleChange(e, setTitle)} value={title} type="text" />
-      <button type='submit' >Upload</button>
-      <Button content='Upload' type='btn-like' contextType='submit' />
-      <Button content='Cancel' type='btn-dislike' onClick={cancelCreation} />
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const post = {
+      meme,
+      title
+    }
+    console.log(post)
+  }
 
+  return (
+    <form onSubmit={handleSubmit} className='content-wrapper'>
+      <div className='media-holder' >
+        {meme
+          ? <img src={URL.createObjectURL(meme)} alt='' />
+          : <input onChange={handleFileChange} multiple type="file" />
+        }
+      </div>
+      <input onChange={e => handleChange(e, setTitle)} value={title} type="text" />
+      {meme
+        ? <Button content='Upload' type='btn-like' contextType='submit' />
+        : null
+      }
+      <Button content='Cancel' type='btn-dislike' onClick={cancelCreation} />
     </form>
   )
 

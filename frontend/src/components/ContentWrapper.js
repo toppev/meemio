@@ -7,7 +7,7 @@ const ContentWrapper = ({ meme, title, like, dislike }) => {
 
   return (
     <div className='content-wrapper' >
-      <div id='media-holder'>
+      <div className='media-holder'>
         <img src={meme} alt='well fuck' />
       </div>
       <h2>{title}</h2>

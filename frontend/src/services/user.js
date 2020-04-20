@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
 const baseUrl = '/user'
 
 const login = async (username, password) => {
