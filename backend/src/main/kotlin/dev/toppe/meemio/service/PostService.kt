@@ -1,5 +1,6 @@
 package dev.toppe.meemio.service
 
+import dev.toppe.meemio.exception.InvalidTitleException
 import dev.toppe.meemio.model.Media
 import dev.toppe.meemio.model.NotificationActionType
 import dev.toppe.meemio.model.Post
@@ -20,8 +21,12 @@ class PostService(
 
     fun isPostOwner(post: Post, user: User) = post.user.id == user.id
 
-    fun createPost(media: Media, user: User = userService.getSelf().get()): Post {
-        val post = Post(user, media = media)
+    fun createPost(media: Media, title: String?, user: User = userService.getSelf().get()): Post {
+        var title = title?.trim() ?: ""
+        if (title.length > 30) {
+            throw InvalidTitleException("the title is too long. Max length: 30")
+        }
+        val post = Post(user, title = title, media = media)
         post.user = user
         user.posts.add(post)
         userRepository.save(user)

@@ -1,6 +1,6 @@
 package dev.toppe.meemio.service
 
-import dev.toppe.meemio.InvalidUsernameException
+import dev.toppe.meemio.exception.InvalidUsernameException
 import dev.toppe.meemio.model.Notification
 import dev.toppe.meemio.model.NotificationActionType
 import dev.toppe.meemio.model.User
