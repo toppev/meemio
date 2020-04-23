@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.web.cors.CorsConfiguration
 
 
@@ -27,11 +28,14 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
         http
                 .cors().configurationSource {
                     CorsConfiguration().apply {
-                        allowedOrigins = listOf("*")
+                        allowedOrigins = listOf("http://localhost:3000")
                         allowedMethods = listOf("*")
+                        allowedHeaders = listOf("*")
+                        allowCredentials = true
                     }
                 }
                 .and()
+                .csrf { it.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) }
                 .httpBasic()
                 .and()
                 .authorizeRequests()

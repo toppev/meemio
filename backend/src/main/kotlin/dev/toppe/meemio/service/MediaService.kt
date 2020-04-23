@@ -1,6 +1,6 @@
 package dev.toppe.meemio.service
 
-import dev.toppe.meemio.NotFoundException
+import dev.toppe.meemio.exception.NotFoundException
 import dev.toppe.meemio.model.Media
 import dev.toppe.meemio.model.UploadType
 import dev.toppe.meemio.model.User

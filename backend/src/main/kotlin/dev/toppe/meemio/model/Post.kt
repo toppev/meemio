@@ -17,6 +17,8 @@ class Post(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0,
 
+        var title: String = "",
+
         // Only count likes and dislikes here
         // The User entity has their likes and dislikes
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)

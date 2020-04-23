@@ -24,7 +24,7 @@ class UserController(
     /**
      * Just returns the user, use Basic Authentication to login
      */
-    @RequestMapping(method = [RequestMethod.GET, RequestMethod.POST], path=["/login"])
+    @RequestMapping(method = [RequestMethod.GET, RequestMethod.POST], path = ["/login"])
     fun login() = userService.getSelf()
 
     @PostMapping(path = ["/{userId}/follow"])
