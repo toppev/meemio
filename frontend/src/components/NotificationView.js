@@ -12,7 +12,7 @@ const NotificationView = () => {
   if (notifications[0]) {
     return (
       <div id='notification-container'>
-        {notifications.map((n, i) => <div className='notification' key={i} >{n.content}</div>)}
+        {notifications.map((n, i) => <div className='notification-alert' key={i} >{n.content}</div>)}
       </div>
     )
   }

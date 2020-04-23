@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
+import { CreatePostForm } from './CreatePostForm'
 import { Button } from './Button'
 
 const CreatePostView = () => {
 
   const [meme, setMeme] = useState(null)
   const [title, setTitle] = useState('')
-
 
   const handleFileChange = (e) => {
     e.preventDefault()
@@ -26,30 +26,20 @@ const CreatePostView = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const post = {
-      meme,
-      title
-    }
-    console.log(post)
+    const formData = new FormData()
+    formData.append('files', meme)
+    formData.append('title', title)
   }
 
   return (
     <form onSubmit={handleSubmit} className='content-wrapper'>
-      <div className='media-holder' >
-        {meme
-          ? <img src={URL.createObjectURL(meme)} alt='' />
-          : <input onChange={handleFileChange} multiple type="file" />
-        }
-      </div>
-      <input onChange={e => handleChange(e, setTitle)} value={title} type="text" />
-      {meme
-        ? <Button content='Upload' type='btn-like' contextType='submit' />
-        : null
-      }
-      <Button content='Cancel' type='btn-dislike' onClick={cancelCreation} />
+      <CreatePostForm handleFileChange={handleFileChange} meme={meme} />
+      <input id='title-input' placeholder='Enter a title for your meme' onChange={e => handleChange(e, setTitle)} value={title} type="text" />
+      {meme ? <Button content='Upload' type='btn-like' contextType='submit' />
+        : null}
+      <Button content='Clear all' type='btn-dislike' onClick={cancelCreation} />
     </form>
   )
-
 }
 
 export { CreatePostView }

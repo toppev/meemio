@@ -11,25 +11,25 @@ import { CreatePostView } from './components/CreatePostView'
 import { memeService } from './services/memes'
 import { userService } from './services/user'
 
-
 import './index.css'
 
 // WIP
 //import { Login } from './components/Login'
 
 const App = () => {
-
   const [memes, setMemes] = useState([])
   const [currentMeme, setCurrentMeme] = useState(0)
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({ message: null, success: true })
+  const [notification, setNotification] = useState({
+    message: null,
+    success: true,
+  })
 
   const history = useHistory()
 
   useEffect(() => {
     login()
-    memeService.getAll()
-      .then(res => setMemes(res))
+    memeService.getAll().then((res) => setMemes(res))
   }, [])
 
   const route = (dest) => {
@@ -47,33 +47,37 @@ const App = () => {
 
   const like = () => {
     setCurrentMeme(currentMeme + 1)
-
   }
 
   const dislike = () => {
     setCurrentMeme(currentMeme + 1)
-
   }
 
   return (
-    <div id='app-wrapper'>
-      {notification.message
-        ? <Notification success={notification.success} message={notification.message} />
-        : null}
-      <div id='app-container'>
+    <div id="app-wrapper">
+      {notification.message ? (
+        <Notification
+          success={notification.success}
+          message={notification.message}
+        />
+      ) : null}
+      <div id="app-container">
         <Header />
         <Switch />
-        <Route path='/' exact >
-          {memes[currentMeme]
-            ? <ContentWrapper title={memes[currentMeme].title}
-              meme={memes[currentMeme].meme} like={like} dislike={dislike} />
-            : null
-          }
+        <Route path="/" exact>
+          {memes[currentMeme] ? (
+            <ContentWrapper
+              title={memes[currentMeme].title}
+              meme={memes[currentMeme].meme}
+              like={like}
+              dislike={dislike}
+            />
+          ) : null}
         </Route>
-        <Route path='/create'>
+        <Route path="/create">
           <CreatePostView />
         </Route>
-        <Route path='/notifications'>
+        <Route path="/notifications">
           <NotificationView />
         </Route>
         <MobileMenu route={route} />

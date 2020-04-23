@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IoIosNotifications, IoIosHome, IoIosPerson, IoIosAddCircle, IoIosAdd } from 'react-icons/io'
+import { IoIosNotifications, IoIosHome, IoIosPerson, IoIosAddCircle } from 'react-icons/io'
 import { Button } from './Button'
 
 const MobileMenu = ({ route, pfp }) => {
