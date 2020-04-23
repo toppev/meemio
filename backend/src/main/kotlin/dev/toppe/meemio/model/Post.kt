@@ -13,10 +13,16 @@ class Post(
         @JsonIgnore
         var user: User,
 
+        /**
+         * The unique id of this post
+         */
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0,
 
+        /**
+         * The title of this post
+         */
         var title: String = "",
 
         // Only count likes and dislikes here
@@ -34,9 +40,15 @@ class Post(
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         var media: Media? = null
 ) {
+    /**
+     * Username of the post owner
+     */
     @JsonProperty(value = "username")
     fun getUsername() = user.username
 
+    /**
+     * Id of the post owner
+     */
     @JsonProperty(value = "userId")
     fun getUserId() = user.id
 }

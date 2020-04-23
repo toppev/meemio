@@ -1,8 +1,10 @@
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("org.springframework.boot") version "2.3.0.M3"
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+	id("org.jetbrains.dokka") version "0.10.1"
 	kotlin("jvm") version "1.3.70"
 	kotlin("plugin.spring") version "1.3.70"
 	kotlin("plugin.jpa") version "1.3.70"
@@ -23,6 +25,7 @@ configurations {
 }
 
 repositories {
+	jcenter()
 	mavenCentral()
 	maven { url = uri("https://repo.spring.io/milestone") }
 }
@@ -55,5 +58,12 @@ tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "1.8"
+	}
+}
+
+tasks {
+	val dokka by getting(DokkaTask::class) {
+		outputFormat = "javadoc"
+		outputDirectory = "../docs"
 	}
 }
