@@ -7,10 +7,10 @@ import { Header } from './components/Header'
 import { NotificationView } from './components/NotificationView'
 import { Notification } from './components/Notification'
 import { CreatePostView } from './components/CreatePostView'
-
+import { ProfileView } from './components/ProfileView'
 import { memeService } from './services/memes'
 import { userService } from './services/user'
-
+import { profileService } from './services/profile'
 import './index.css'
 
 // WIP
@@ -20,6 +20,8 @@ const App = () => {
   const [memes, setMemes] = useState([])
   const [currentMeme, setCurrentMeme] = useState(0)
   const [user, setUser] = useState(null)
+  const [followers, setFollowers] = useState([])
+  const [following, setFollowing] = useState([])
   const [notification, setNotification] = useState({
     message: null,
     success: true,
@@ -29,7 +31,15 @@ const App = () => {
 
   useEffect(() => {
     login()
-    memeService.getAll().then((res) => setMemes(res))
+    // Get memes
+    memeService.getAll()
+      .then((res) => setMemes(res))
+    // Get followers
+    profileService.getAll()
+      .then(res => {
+        setFollowers(res)
+        setFollowing(res)
+      })
   }, [])
 
   const route = (dest) => {
@@ -79,6 +89,9 @@ const App = () => {
         </Route>
         <Route path="/notifications">
           <NotificationView />
+        </Route>
+        <Route path='/profile'>
+          <ProfileView following={following} followers={followers} />
         </Route>
         <MobileMenu route={route} />
       </div>
