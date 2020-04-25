@@ -10,7 +10,6 @@ import { CreatePostView } from './components/CreatePostView'
 import { ProfileView } from './components/ProfileView'
 import { memeService } from './services/memes'
 import { userService } from './services/user'
-import { profileService } from './services/profile'
 import './index.css'
 
 // WIP
@@ -20,9 +19,7 @@ const App = () => {
   const [memes, setMemes] = useState([])
   const [currentMeme, setCurrentMeme] = useState(0)
   const [user, setUser] = useState(null)
-  const [followers, setFollowers] = useState([])
-  const [following, setFollowing] = useState([])
-  const [avatar, setAvatar] = useState(null)
+  const [initialLoad, setInitialLoad] = useState(true)
   const [notification, setNotification] = useState({
     message: null,
     successful: true,
@@ -32,15 +29,7 @@ const App = () => {
 
   useEffect(() => {
     login()
-    // Get memes
-    memeService.getAll()
-      .then((res) => setMemes(res))
-    // Get followers
-    profileService.getAll()
-      .then(res => {
-        setFollowers(res)
-        setFollowing(res)
-      })
+    setInitialLoad(false)
   }, [])
 
   const route = (dest) => {
@@ -52,27 +41,39 @@ const App = () => {
       const they = await userService.login(username, password)
       if (they) {
         setUser(they)
+        const meymes = await memeService.getMemes()
+        setMemes(meymes)
         route('/home')
+        notifier(`Logged in as ${they.username}`, true)
+
+      } else {
+        if (!initialLoad) notifier('Login failed', false)
       }
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.log(error)
     }
+
   }
 
   const register = async (username, password) => {
     try {
-      const they = await userService.register(username, password)
-      console.log(they)
+      await userService.register(username, password)
+      login(username, password)
     } catch (err) {
       console.error(err)
     }
   }
 
   const like = () => {
+    memeService.like(memes[currentMeme].id)
+      .then(res => console.log(res))
     setCurrentMeme(currentMeme + 1)
+    changeFollow()
   }
 
   const dislike = () => {
+    memeService.dislike(memes[currentMeme].id)
+      .then(res => console.log(res))
     setCurrentMeme(currentMeme + 1)
   }
 
@@ -94,6 +95,10 @@ const App = () => {
     }
   }
 
+  const changeFollow = () => {
+    userService.follow(1)
+      .then(res => console.log(res))
+  }
   return (
     <div id="app-wrapper">
       {notification.message ? (
@@ -109,9 +114,10 @@ const App = () => {
             {user ? memes[currentMeme] ? (
               <ContentWrapper
                 title={memes[currentMeme].title}
-                meme={memes[currentMeme].meme}
+                meme={memes[currentMeme].id}
                 like={like}
                 dislike={dislike}
+                user={memes[currentMeme].username}
               />
             ) : null
               : <Redirect to='/' />}
@@ -127,7 +133,7 @@ const App = () => {
             }
           </Route>
           <Route path='/profile'>
-            {user ? <ProfileView aviUpdate={aviUpdate} following={following} followers={followers} />
+            {user ? <ProfileView aviUpdate={aviUpdate} following={user.following} followers={user.followers} />
               : <Redirect to='/' />
             }
           </Route>

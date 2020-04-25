@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { CreatePostForm } from './CreatePostForm'
 import { Button } from './Button'
 
+import { uploadMeme } from '../services/memes'
+
 const CreatePostView = () => {
 
   const [meme, setMeme] = useState(null)
@@ -29,6 +31,8 @@ const CreatePostView = () => {
     const formData = new FormData()
     formData.append('files', meme)
     formData.append('title', title)
+    uploadMeme(formData)
+      .then(res => console.log(res))
   }
 
   return (

@@ -26,6 +26,16 @@ const login = async (username, password) => {
   }
 }
 
+const follow = async (id) => {
+  const response = await axios.post(`${baseUrl}/${id}/follow`)
+  return response.data
+}
+
+const unfollow = async (id) => {
+  const response = await axios.post(`${baseUrl}/${id}/unfollow`)
+  return response
+}
+
 const register = async (username, password) => {
   const response = await axios.post(`${baseUrl}/register`, {
     username,
@@ -42,7 +52,9 @@ const aviUpdate = async (formData) => {
 const userService = {
   login,
   register,
-  aviUpdate
+  aviUpdate,
+  follow,
+  unfollow,
 }
 
 export { userService }

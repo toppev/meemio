@@ -22,10 +22,10 @@ const Login = ({ login, register, notifier }) => {
   const handleRegister = (e) => {
     e.preventDefault()
     if (createPassword !== checkPassword) {
-      notifier('Password confirmation failed')
+      notifier('Passwords different')
     }
     register(createUsername, createPassword)
-
+    nullAll()
   }
   const nullAll = () => {
     setUsername('')
@@ -44,7 +44,7 @@ const Login = ({ login, register, notifier }) => {
       </form>
       <form className='login-form' onSubmit={handleRegister}>
         <input placeholder='enter a username' value={createUsername} onChange={e => handleChange(e, setCreateUsername)} type="text" />
-        <input placeholder='enter a password' value={createPassword} onChange={e => handleChange(e, setCreatePassword)} type="password" />
+        <input placeholder='enter a password (min. length 3)' value={createPassword} onChange={e => handleChange(e, setCreatePassword)} type="password" />
         <input placeholder='confirm password' value={checkPassword} onChange={e => handleChange(e, setCheckPassword)} type="password" />
         <button className='btn btn-login' type='submit' >Create Account</button>
       </form>
