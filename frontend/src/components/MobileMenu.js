@@ -14,7 +14,7 @@ const MobileMenu = ({ route, pfp }) => {
       />
       <Button
         content={<IoIosHome />}
-        onClick={() => route('/')}
+        onClick={() => route('/home')}
         type='menu-element'
       />
       <Button

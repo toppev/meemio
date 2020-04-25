@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/memes'
-const realUrl = '/post'
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
+const baseUrl = '/post'
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)

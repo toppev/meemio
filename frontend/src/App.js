@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Switch, Route, useHistory } from 'react-router-dom'
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom'
 
 import { ContentWrapper } from './components/ContentWrapper'
 import { MobileMenu } from './components/MobileMenu'
@@ -14,7 +14,7 @@ import { profileService } from './services/profile'
 import './index.css'
 
 // WIP
-//import { Login } from './components/Login'
+import { Login } from './components/Login'
 
 const App = () => {
   const [memes, setMemes] = useState([])
@@ -22,9 +22,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
+  const [avatar, setAvatar] = useState(null)
   const [notification, setNotification] = useState({
     message: null,
-    success: true,
+    successful: true,
   })
 
   const history = useHistory()
@@ -46,10 +47,22 @@ const App = () => {
     history.push(dest)
   }
 
-  const login = async () => {
+  const login = async (username, password) => {
     try {
-      const they = await userService.login('xxd', 'lol')
-      setUser(they)
+      const they = await userService.login(username, password)
+      if (they) {
+        setUser(they)
+        route('/home')
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const register = async (username, password) => {
+    try {
+      const they = await userService.register(username, password)
+      console.log(they)
     } catch (err) {
       console.error(err)
     }
@@ -63,37 +76,67 @@ const App = () => {
     setCurrentMeme(currentMeme + 1)
   }
 
+  const notifier = (message, successful) => {
+    setNotification({ message, successful })
+    setTimeout(() => setNotification({
+      message: null,
+      successful: true
+    }), 3000)
+  }
+
+  const aviUpdate = async (formData) => {
+    try {
+      const res = await userService.aviUpdate(formData)
+      if (res) notifier('Your avatar has been updated', true)
+    } catch (err) {
+      console.error(err)
+      notifier('There was an error updating your avatar', false)
+    }
+  }
+
   return (
     <div id="app-wrapper">
       {notification.message ? (
         <Notification
-          success={notification.success}
+          success={notification.successful}
           message={notification.message}
         />
       ) : null}
       <div id="app-container">
         <Header />
-        <Switch />
-        <Route path="/" exact>
-          {memes[currentMeme] ? (
-            <ContentWrapper
-              title={memes[currentMeme].title}
-              meme={memes[currentMeme].meme}
-              like={like}
-              dislike={dislike}
-            />
-          ) : null}
-        </Route>
-        <Route path="/create">
-          <CreatePostView />
-        </Route>
-        <Route path="/notifications">
-          <NotificationView />
-        </Route>
-        <Route path='/profile'>
-          <ProfileView following={following} followers={followers} />
-        </Route>
-        <MobileMenu route={route} />
+        <Switch>
+          <Route path="/home" exact>
+            {user ? memes[currentMeme] ? (
+              <ContentWrapper
+                title={memes[currentMeme].title}
+                meme={memes[currentMeme].meme}
+                like={like}
+                dislike={dislike}
+              />
+            ) : null
+              : <Redirect to='/' />}
+          </Route>
+          <Route path="/create">
+            {user ? <CreatePostView />
+              : <Redirect to='/' />
+            }
+          </Route>
+          <Route path="/notifications">
+            {user ? <NotificationView />
+              : <Redirect to='/' />
+            }
+          </Route>
+          <Route path='/profile'>
+            {user ? <ProfileView aviUpdate={aviUpdate} following={following} followers={followers} />
+              : <Redirect to='/' />
+            }
+          </Route>
+          <Route path='/'>
+            <Login notifier={notifier} register={register} login={login} />
+          </Route>
+        </Switch>
+        {user ? <MobileMenu route={route} />
+          : null}
       </div>
     </div>
   )

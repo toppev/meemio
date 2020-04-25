@@ -1,0 +1,27 @@
+@use "./colors"as *;
+
+.login-and-register-container {
+  height: 90%;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.login-form {
+  margin-top: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+
+  input {
+    height: 3em;
+  }
+}
+
+.btn-login {
+  color: $white--1;
+}

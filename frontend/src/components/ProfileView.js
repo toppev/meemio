@@ -1,16 +1,19 @@
 import React from 'react'
 import { FollowView } from './FollowView'
 
-const ProfileView = ({ followers, following }) => {
-  const handleSubmit = () => {
+const ProfileView = ({ followers, following, aviUpdate }) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    
+    const formData = new FormData()
+    formData.append('file', e.target.files[0])
+    aviUpdate(formData)
   }
+
   return (
     <div className='profile-view'>
       <form >
         <label >
-          <input onChange={} type='file' />
+          <input onChange={handleSubmit} type='file' />
           <h2 id='change-icon'>Change Icon</h2>
         </label>
       </form>
