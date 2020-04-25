@@ -40,7 +40,13 @@ const App = () => {
     try {
       const they = await userService.login(username, password)
       if (they) {
-        setUser(they)
+        if (typeof they === 'string') {
+          console.log(they, 'is string')
+          setUser(JSON.parse(they))
+        } else {
+          setUser(they)
+          console.log(they, 'is object')
+        }
         const meymes = await memeService.getMemes()
         setMemes(meymes)
         route('/home')
@@ -96,8 +102,13 @@ const App = () => {
   }
 
   const changeFollow = () => {
-    userService.follow(1)
-      .then(res => console.log(res))
+    if (user.following.find(u => u.id === memes[currentMeme].userId)) {
+      userService.follow(memes[currentMeme].userId)
+        .then(res => console.log(res))
+    } else {
+      userService.unfollow(memes[currentMeme].userId)
+        .then(res => console.log(res))
+    }
   }
   return (
     <div id="app-wrapper">
@@ -114,7 +125,7 @@ const App = () => {
             {user ? memes[currentMeme] ? (
               <ContentWrapper
                 title={memes[currentMeme].title}
-                meme={memes[currentMeme].id}
+                meme={memes[currentMeme].media.id}
                 like={like}
                 dislike={dislike}
                 user={memes[currentMeme].username}
@@ -123,7 +134,7 @@ const App = () => {
               : <Redirect to='/' />}
           </Route>
           <Route path="/create">
-            {user ? <CreatePostView />
+            {user ? <CreatePostView notifier={notifier} />
               : <Redirect to='/' />
             }
           </Route>
