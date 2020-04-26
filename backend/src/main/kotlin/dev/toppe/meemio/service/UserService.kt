@@ -36,12 +36,12 @@ class UserService(
     /**
      * Get all notifications
      */
-    fun getNotifications(user: User = getCurrentUser()) = user.notifications
+    fun getNotifications(user: User = getSelf().get()) = user.notifications
 
     /**
      * Mark the given notification as read
      */
-    fun markAsRead(notification: Notification, user: User = getCurrentUser()): Boolean {
+    fun markAsRead(notification: Notification, user: User = getSelf().get()): Boolean {
         if (!notification.hasRead) {
             notification.hasRead = true
             userRepository.save(user)
@@ -53,7 +53,12 @@ class UserService(
     /**
      * Mark all notification as read
      */
-    fun markAllAsRead(user: User = getCurrentUser()) = getNotifications(user).forEach { markAsRead(it, user) }
+    fun markAllAsRead(user: User = getSelf().get()) {
+        getNotifications(user).filter { !it.hasRead }.takeIf { it.isNotEmpty() }?.let {
+            it.forEach { n -> n.hasRead = true }
+            userRepository.save(user)
+        }
+    }
 
     /**
      * Follow the user and add to their followers
