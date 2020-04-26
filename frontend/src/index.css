@@ -60,6 +60,22 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+.profile-route-btn {
+  color: #5400ac;
+}
+
+.create-route-btn {
+  color: #007f03;
+}
+
+.home-route-btn {
+  color: #ffd800;
+}
+
+.notif-route-btn {
+  color: #ff3d00;
+}
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -76,6 +92,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.media-holder p {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 img {

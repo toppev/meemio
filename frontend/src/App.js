@@ -21,6 +21,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [initialLoad, setInitialLoad] = useState(true)
   const [notifications, setNotifications] = useState([])
+  const [following, setFollowing] = useState([])
+  const [followers, setFollowers] = useState([])
+  const [userLinks, setUserLinks] = useState('')
+  const [userId, setUserId] = useState(null)
   const [notification, setNotification] = useState({
     message: null,
     successful: true,
@@ -48,18 +52,18 @@ const App = () => {
     try {
       const they = await userService.login(username, password)
       if (they) {
-        if (typeof they === 'string') {
-          console.log(they, 'is string')
-          setUser(JSON.parse(they))
-        } else {
-          setUser(they)
-          console.log(they, 'is object')
-        }
+        setUser(they)
+        console.log(they)
         const meymes = await memeService.getMemes()
         setMemes(meymes)
         route('/home')
+        setUserLinks(they._links)
+        setUserId(they._links.user.href.substring(they._links.user.href.length - 1))
         notifier(`Logged in as ${they.username}`, true)
-
+        userService.getFollowing(they._links.user.href.substring(they._links.user.href.length - 1))
+          .then(res => setFollowing(res._embedded.users))
+        userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
+          .then(res => console.log(res._embedded.users))
       } else {
         if (!initialLoad) notifier('Login failed', false)
       }
@@ -87,7 +91,7 @@ const App = () => {
     } else {
       setUser({ ...user, likes: [memes[currentMeme].id] })
     }
-
+    console.log(following)
   }
 
   const dislike = () => {
@@ -120,13 +124,19 @@ const App = () => {
   }
 
   const changeFollow = () => {
-    if (user.following.find(u => u.id === memes[currentMeme].userId)) {
-      userService.follow(memes[currentMeme].userId)
-        .then(res => console.log(res))
-    } else {
+    if (!following[0]) {
       userService.unfollow(memes[currentMeme].userId)
         .then(res => console.log(res))
+    } else {
+      if (following.find(u => u.id === memes[currentMeme].userId)) {
+        userService.follow(memes[currentMeme].userId)
+          .then(res => console.log(res))
+      } else {
+        userService.unfollow(memes[currentMeme].userId)
+          .then(res => console.log(res))
+      }
     }
+
   }
   return (
     <div id="app-wrapper">
@@ -163,7 +173,7 @@ const App = () => {
             }
           </Route>
           <Route path='/profile'>
-            {user ? <ProfileView aviUpdate={aviUpdate} following={user.following} followers={user.followers} />
+            {user ? <ProfileView aviUpdate={aviUpdate} following={following} followers={followers} />
               : <Redirect to='/' />
             }
           </Route>

@@ -10,24 +10,24 @@ const MobileMenu = ({ route, pfp }) => {
       <Button
         content={<IoIosNotifications />}
         onClick={() => route('/notifications')}
-        type='menu-element'
+        type='menu-element notif-route-btn'
       />
       <Button
         content={<IoIosHome />}
         onClick={() => route('/home')}
-        type='menu-element'
+        type='menu-element home-route-btn'
       />
       <Button
         content={<IoIosAddCircle />}
         onClick={() => route('/create')}
-        type='menu-element'
+        type='menu-element create-route-btn'
       />
       <Button
         content={pfp
           ? null
           : <IoIosPerson />}
         onClick={() => route('/profile')}
-        type='menu-element'
+        type='menu-element profile-route-btn'
       />
     </div>
   )

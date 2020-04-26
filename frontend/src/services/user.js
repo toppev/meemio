@@ -35,6 +35,14 @@ const unfollow = async (id) => {
   const response = await axios.post(`${baseUrl}/${id}/unfollow`)
   return response
 }
+const getFollowers = async (id) => {
+  const response = await axios.get(`${baseUrl}s/${id}/followers`)
+  return response.data
+}
+const getFollowing = async (id) => {
+  const response = await axios.get(`${baseUrl}s/${id}/following`)
+  return response.data
+}
 
 const register = async (username, password) => {
   const response = await axios.post(`${baseUrl}/register`, {
@@ -55,6 +63,8 @@ const userService = {
   aviUpdate,
   follow,
   unfollow,
+  getFollowers,
+  getFollowing
 }
 
 export { userService }

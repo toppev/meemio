@@ -1,3 +1,5 @@
+@use "./colors"as *;
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -14,8 +16,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
+}
 
 img {
   width: auto;

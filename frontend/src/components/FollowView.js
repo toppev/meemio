@@ -7,7 +7,7 @@ const FollowView = ({ people }) => {
     <div className='follow-container'>
       {people.map((p, i) => <div className='follow' key={i}>
         {p.avatar
-          ? <img src={p.avatar} alt={"Avatar missing"} />
+          ? <img src={`/media/${p.avatar.id}`} alt={"Avatar missing"} />
           : <IoIosPerson />
         }
         <p>{p.username}</p>
