@@ -39,7 +39,8 @@ class PostService(
      */
     fun likePost(post: Post, user: User = userService.getSelf().get()) {
         removeReaction(post, user)
-        if (user.likedPosts.add(post)) {
+        if (!user.hasLikedPost(post)) {
+            user.likedPosts.add(post)
             post.likes++
             postRepository.save(post)
             val likeCount = post.likes
@@ -62,8 +63,8 @@ class PostService(
      */
     fun dislikePost(post: Post, user: User = userService.getSelf().get()) {
         removeReaction(post, user)
-        if (user.dislikedPosts.add(post)) {
-            println(user.dislikedPosts)
+        if(!user.hasDislikedPost(post)) {
+            user.dislikedPosts.add(post)
             post.dislikes++
             postRepository.save(post)
             userRepository.save(user)

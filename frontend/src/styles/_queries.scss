@@ -1,18 +1,23 @@
-@media (max-width: 480px) {
+// Mobile view made into just a general view for mvp
+
+@media (max-width: 2400px) {
+
+  #mobile-navbar {
+    display: flex;
+  }
+}
+
+@media (max-width: 450px) {
 
   .btn-like {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 50%;
   }
 
   .btn-dislike {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 50%;
-  }
-
-  #mobile-navbar {
-    display: flex;
   }
 }

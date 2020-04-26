@@ -19,7 +19,7 @@ const Notification = ({ success, message }) => {
       <p className='notification-text'>
         {message}
       </p>
-    </div >
+    </div>
   )
 }
 

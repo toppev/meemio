@@ -1,5 +1,6 @@
 package dev.toppe.meemio.controller
 
+import dev.toppe.meemio.exception.NotFoundException
 import dev.toppe.meemio.model.Media
 import dev.toppe.meemio.model.UploadType
 import dev.toppe.meemio.service.MediaService
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletResponse
+
 
 // see UserRepository path: "/users"
 @RestController
@@ -25,7 +28,11 @@ class UserController(
      * Just returns the user, use Basic Authentication to login
      */
     @RequestMapping(method = [RequestMethod.GET, RequestMethod.POST], path = ["/login"])
-    fun login() = userService.getSelf()
+    fun login(response: HttpServletResponse) {
+        val userId = userService.getSelf().orElseThrow { NotFoundException("user not found") }.id
+        // temp fix: redirect to the Spring Data REST endpoint to avoid infinite recursion
+        response.sendRedirect("../users/$userId")
+    }
 
     @PostMapping(path = ["/{userId}/follow"])
     fun followUser(@PathVariable userId: Long) = userService.follow(userId)

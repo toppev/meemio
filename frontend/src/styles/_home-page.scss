@@ -1,3 +1,5 @@
+@use "./colors"as *;
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -8,14 +10,20 @@
   height: 80%;
 }
 
-#media-holder {
+.media-holder {
   height: 90%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
+.title-holder {
+  p {
+    color: $white-1;
+  }
+}
 
 img {
   width: auto;

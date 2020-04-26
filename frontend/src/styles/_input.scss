@@ -1,0 +1,41 @@
+@use "./colors"as *;
+
+input[type='file'] {
+  opacity: 0;
+}
+
+.inputfile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: $white--1;
+  width: 100%;
+  height: auto;
+}
+
+.inputfile:hover {
+  cursor: pointer;
+}
+
+#select-file-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+
+  svg {
+    height: 3em;
+    width: 3em;
+  }
+}
+
+#title-input {
+  height: 5%;
+  width: 60%;
+  text-align: center;
+  margin: auto;
+  border: none;
+}

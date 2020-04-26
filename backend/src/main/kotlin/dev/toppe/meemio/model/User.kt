@@ -69,4 +69,11 @@ class User(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0
-)
+
+) {
+
+        fun hasLikedPost(post: Post) = likedPosts.any { it.id == post.id }
+
+        fun hasDislikedPost(post: Post) = dislikedPosts.any { it.id == post.id }
+
+}

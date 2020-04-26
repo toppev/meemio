@@ -36,12 +36,12 @@ class UserService(
     /**
      * Get all notifications
      */
-    fun getNotifications(user: User = getCurrentUser()) = user.notifications
+    fun getNotifications(user: User = getSelf().get()) = user.notifications
 
     /**
      * Mark the given notification as read
      */
-    fun markAsRead(notification: Notification, user: User = getCurrentUser()): Boolean {
+    fun markAsRead(notification: Notification, user: User = getSelf().get()): Boolean {
         if (!notification.hasRead) {
             notification.hasRead = true
             userRepository.save(user)
@@ -53,7 +53,12 @@ class UserService(
     /**
      * Mark all notification as read
      */
-    fun markAllAsRead(user: User = getCurrentUser()) = getNotifications(user).forEach { markAsRead(it, user) }
+    fun markAllAsRead(user: User = getSelf().get()) {
+        getNotifications(user).filter { !it.hasRead }.takeIf { it.isNotEmpty() }?.let {
+            it.forEach { n -> n.hasRead = true }
+            userRepository.save(user)
+        }
+    }
 
     /**
      * Follow the user and add to their followers
@@ -61,10 +66,10 @@ class UserService(
      */
     fun follow(toFollowId: Long, user: User = getSelf().get()) {
         val toFollow = userRepository.findById(toFollowId).orElseThrow { NotFoundException("user $toFollowId") }
-        if (user.following.add(toFollow)) {
+        if(!user.following.any { it.id == toFollowId }) {
+            user.following.add(toFollow)
             userRepository.save(user)
-        }
-        if (toFollow.followers.add(user)) {
+            toFollow.followers.add(user)
             addNotification(toFollow, "${user.username} started following you!", NotificationActionType.PROFILE, user.id)
             userRepository.save(toFollow)
         }
@@ -76,10 +81,10 @@ class UserService(
      */
     fun unfollow(unfollowId: Long, user: User = getSelf().get()) {
         userRepository.findById(unfollowId).orElseThrow { NotFoundException("user $unfollowId") }.let { unfollow ->
-            if (user.following.remove(unfollow)) {
+            if (user.following.removeIf {it.id == unfollowId}) {
                 userRepository.save(user)
             }
-            if (unfollow.followers.remove(user)) {
+            if (unfollow.followers.removeIf { it.id == user.id }) {
                 userRepository.save(unfollow)
             }
         }

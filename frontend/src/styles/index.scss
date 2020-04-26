@@ -5,7 +5,9 @@
 @use "./home-page"as home;
 @use "./notification-page"as notifications;
 @use "./notification"as notification;
-@use "./creation-view"as creation-view;
+@use "./input"as input;
+@use "./profile-page"as pfp;
+@use "./login"as login;
 
 @use "./queries"as queries;
 
@@ -25,6 +27,8 @@ body {
 #app-wrapper {
   height: 100%;
   width: 100%;
+  max-width: 450px;
+  max-height: 840px;
 }
 
 #app-container {
@@ -45,6 +49,11 @@ h1 {
   background-clip: text;
   color: transparent;
   font-size: 3em;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
 }
 
 h2 {
