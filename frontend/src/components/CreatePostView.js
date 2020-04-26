@@ -5,7 +5,7 @@ import { Button } from './Button'
 
 import { uploadMeme } from '../services/memes'
 
-const CreatePostView = () => {
+const CreatePostView = ({ notifier, setUser }) => {
 
   const [meme, setMeme] = useState(null)
   const [title, setTitle] = useState('')
@@ -32,7 +32,10 @@ const CreatePostView = () => {
     formData.append('files', meme)
     formData.append('title', title)
     uploadMeme(formData)
-      .then(res => console.log(res))
+      .then(res => setUser(res))
+    notifier('Meme uploaded', true)
+    setMeme(null)
+    setTitle('')
   }
 
   return (

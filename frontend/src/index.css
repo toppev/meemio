@@ -60,6 +60,22 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+.profile-route-btn {
+  color: #5400ac;
+}
+
+.create-route-btn {
+  color: #007f03;
+}
+
+.home-route-btn {
+  color: #ffd800;
+}
+
+.notif-route-btn {
+  color: #ff3d00;
+}
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -76,6 +92,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.title-holder p {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 img {
@@ -219,12 +239,31 @@ input[type=file] {
   justify-content: flex-start;
   align-items: center;
   font-size: 18px;
-  border-top: 1px solid rgba(0, 0, 0, 0.85);
+  border-top: 1px solid rgba(0, 0, 0, 0.95);
   color: rgba(255, 255, 255, 0.85);
+}
+.follow img {
+  max-width: 2em;
+}
+.follow p {
+  margin-left: 1em;
 }
 
 #change-icon {
   padding: 5%;
+}
+
+#profile {
+  width: 90%;
+  padding: 5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+}
+#profile svg {
+  height: 2em;
+  width: 2em;
 }
 
 .profile-pane {
@@ -288,21 +327,22 @@ p {
   color: rgba(255, 255, 255, 0.95);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 2400px) {
+  #mobile-navbar {
+    display: flex;
+  }
+}
+@media (max-width: 450px) {
   .btn-like {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 50%;
   }
 
   .btn-dislike {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 50%;
-  }
-
-  #mobile-navbar {
-    display: flex;
   }
 }
 body {
@@ -321,6 +361,8 @@ body {
 #app-wrapper {
   height: 100%;
   width: 100%;
+  max-width: 450px;
+  max-height: 840px;
 }
 
 #app-container {

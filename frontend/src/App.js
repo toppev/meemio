@@ -14,12 +14,17 @@ import './index.css'
 
 // WIP
 import { Login } from './components/Login'
-
+import { notificationService } from './services/notifications'
 const App = () => {
   const [memes, setMemes] = useState([])
   const [currentMeme, setCurrentMeme] = useState(0)
   const [user, setUser] = useState(null)
   const [initialLoad, setInitialLoad] = useState(true)
+  const [notifications, setNotifications] = useState([])
+  const [following, setFollowing] = useState([])
+  const [followers, setFollowers] = useState([])
+  const [userLinks, setUserLinks] = useState('')
+  const [userId, setUserId] = useState(null)
   const [notification, setNotification] = useState({
     message: null,
     successful: true,
@@ -30,6 +35,13 @@ const App = () => {
   useEffect(() => {
     login()
     setInitialLoad(false)
+    notificationService.getAll()
+      .then(res => {
+        console.log('inside thingy')
+        console.log(res)
+        setNotifications(res)
+      })
+      .catch(err => console.log(err))
   }, [])
 
   const route = (dest) => {
@@ -41,16 +53,24 @@ const App = () => {
       const they = await userService.login(username, password)
       if (they) {
         setUser(they)
+        console.log(they)
         const meymes = await memeService.getMemes()
         setMemes(meymes)
         route('/home')
+        setUserLinks(they._links)
+        setUserId(they._links.user.href.substring(they._links.user.href.length - 1))
         notifier(`Logged in as ${they.username}`, true)
-
+        const followedAccounts = await userService.getFollowing(they._links.user.href.substring(they._links.user.href.length - 1))
+        setFollowing(followedAccounts._embedded.users)
+        const followingAccoutns = await userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
+        setFollowers(followingAccoutns)
+        const noti = await notificationService.getAll()
+        console.log(noti)
       } else {
         if (!initialLoad) notifier('Login failed', false)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
 
   }
@@ -68,13 +88,23 @@ const App = () => {
     memeService.like(memes[currentMeme].id)
       .then(res => console.log(res))
     setCurrentMeme(currentMeme + 1)
-    changeFollow()
+    if (user.likes) {
+      setUser({ ...user, likes: [...user.likes, memes[currentMeme].id] })
+    } else {
+      setUser({ ...user, likes: [memes[currentMeme].id] })
+    }
+    console.log(following)
   }
 
   const dislike = () => {
     memeService.dislike(memes[currentMeme].id)
       .then(res => console.log(res))
     setCurrentMeme(currentMeme + 1)
+    if (user.dislikes) {
+      setUser({ ...user, dislikes: [...user.dislikes, memes[currentMeme].id] })
+    } else {
+      setUser({ ...user, dislikes: [memes[currentMeme].id] })
+    }
   }
 
   const notifier = (message, successful) => {
@@ -95,9 +125,37 @@ const App = () => {
     }
   }
 
-  const changeFollow = () => {
-    userService.follow(1)
-      .then(res => console.log(res))
+  const changeFollow = (id) => {
+    if (!following[0]) {
+      userService.follow(id)
+        .then(() => userService.getUser(id)
+          .then(res => {
+            console.log(res)
+            setFollowing([res])
+            notifier(`Followed ${res.username}`, true)
+          }))
+    } else {
+      const unfollowable = following.find(u => u.id === id)
+      console.log(unfollowable)
+      if (unfollowable) {
+        console.log(unfollowable, 'exists')
+        notifier(`Unfollowed ${unfollowable.username}`, true)
+        userService.unfollow(id)
+          .then((res) => {
+            setFollowing(following.filter(f => f.id !== id))
+          })
+      } else {
+        userService.follow(id)
+          .then(() => userService.getUser(id)
+            .then(res => {
+              console.log(res)
+              setFollowing([...following, res])
+              notifier(`Followed ${res.username}`, true)
+            })
+          )
+      }
+    }
+
   }
   return (
     <div id="app-wrapper">
@@ -114,26 +172,29 @@ const App = () => {
             {user ? memes[currentMeme] ? (
               <ContentWrapper
                 title={memes[currentMeme].title}
-                meme={memes[currentMeme].id}
+                meme={memes[currentMeme].media.id}
                 like={like}
                 dislike={dislike}
                 user={memes[currentMeme].username}
+                changeFollow={changeFollow}
+                userId={memes[currentMeme].userId}
               />
-            ) : null
+            ) : <h2>No new memes, sorry </h2>
               : <Redirect to='/' />}
           </Route>
           <Route path="/create">
-            {user ? <CreatePostView />
+            {user ? <CreatePostView setUser={(meme) => setUser({ ...user, posts: [...user.posts, meme] })} notifier={notifier} />
               : <Redirect to='/' />
             }
           </Route>
           <Route path="/notifications">
-            {user ? <NotificationView />
+            {user ? <NotificationView notifications={notifications} />
               : <Redirect to='/' />
             }
           </Route>
           <Route path='/profile'>
-            {user ? <ProfileView aviUpdate={aviUpdate} following={user.following} followers={user.followers} />
+            {user ? <ProfileView changeFollow={changeFollow} avi={user.avatar ? user.avatar.id : null} username={user.username}
+              aviUpdate={aviUpdate} following={following} followers={followers} />
               : <Redirect to='/' />
             }
           </Route>

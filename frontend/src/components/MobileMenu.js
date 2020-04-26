@@ -3,31 +3,29 @@ import React from 'react'
 import { IoIosNotifications, IoIosHome, IoIosPerson, IoIosAddCircle } from 'react-icons/io'
 import { Button } from './Button'
 
-const MobileMenu = ({ route, pfp }) => {
+const MobileMenu = ({ route, }) => {
 
   return (
     <div className='mobile-specific' id='mobile-navbar'>
       <Button
         content={<IoIosNotifications />}
         onClick={() => route('/notifications')}
-        type='menu-element'
+        type='menu-element notif-route-btn'
       />
       <Button
         content={<IoIosHome />}
         onClick={() => route('/home')}
-        type='menu-element'
+        type='menu-element home-route-btn'
       />
       <Button
         content={<IoIosAddCircle />}
         onClick={() => route('/create')}
-        type='menu-element'
+        type='menu-element create-route-btn'
       />
       <Button
-        content={pfp
-          ? null
-          : <IoIosPerson />}
+        content={<IoIosPerson />}
         onClick={() => route('/profile')}
-        type='menu-element'
+        type='menu-element profile-route-btn'
       />
     </div>
   )
