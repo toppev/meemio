@@ -63,7 +63,7 @@ const App = () => {
         const followedAccounts = await userService.getFollowing(they._links.user.href.substring(they._links.user.href.length - 1))
         setFollowing(followedAccounts._embedded.users)
         const followingAccoutns = await userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
-        setFollowers(followingAccoutns)
+        setFollowers(followingAccoutns._embedded.users)
         const noti = await notificationService.getAll()
         setNotifications(noti)
       } else {

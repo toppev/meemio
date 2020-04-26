@@ -18,4 +18,4 @@ const notificationService = {
   readAll
 }
 
-export { notificationService, readAll }
+export { notificationService }

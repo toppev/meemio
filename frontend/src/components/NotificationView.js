@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 const NotificationView = ({ notifications, readAll }) => {
   useEffect(() => {
     readAll()
-  }, [readAll])
+  }, [])
   if (notifications[0]) {
     return (
       <div id='notification-container'>
