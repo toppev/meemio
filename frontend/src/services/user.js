@@ -31,9 +31,14 @@ const follow = async (id) => {
   return response.data
 }
 
+const getUser = async (id) => {
+  const response = await axios.get(`${baseUrl}s/${id}`)
+  return response.data
+}
+
 const unfollow = async (id) => {
   const response = await axios.post(`${baseUrl}/${id}/unfollow`)
-  return response
+  return response.data
 }
 const getFollowers = async (id) => {
   const response = await axios.get(`${baseUrl}s/${id}/followers`)
@@ -64,7 +69,8 @@ const userService = {
   follow,
   unfollow,
   getFollowers,
-  getFollowing
+  getFollowing,
+  getUser
 }
 
 export { userService }

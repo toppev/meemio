@@ -60,15 +60,17 @@ const App = () => {
         setUserLinks(they._links)
         setUserId(they._links.user.href.substring(they._links.user.href.length - 1))
         notifier(`Logged in as ${they.username}`, true)
-        userService.getFollowing(they._links.user.href.substring(they._links.user.href.length - 1))
-          .then(res => setFollowing(res._embedded.users))
-        userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
-          .then(res => console.log(res._embedded.users))
+        const followedAccounts = await userService.getFollowing(they._links.user.href.substring(they._links.user.href.length - 1))
+        setFollowing(followedAccounts._embedded.users)
+        const followingAccoutns = await userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
+        setFollowers(followingAccoutns)
+        const noti = await notificationService.getAll()
+        console.log(noti)
       } else {
         if (!initialLoad) notifier('Login failed', false)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
 
   }
@@ -123,17 +125,34 @@ const App = () => {
     }
   }
 
-  const changeFollow = () => {
+  const changeFollow = (id) => {
     if (!following[0]) {
-      userService.unfollow(memes[currentMeme].userId)
-        .then(res => console.log(res))
+      userService.follow(id)
+        .then(() => userService.getUser(id)
+          .then(res => {
+            console.log(res)
+            setFollowing([res])
+            notifier(`Followed ${res.username}`, true)
+          }))
     } else {
-      if (following.find(u => u.id === memes[currentMeme].userId)) {
-        userService.follow(memes[currentMeme].userId)
-          .then(res => console.log(res))
+      const unfollowable = following.find(u => u.id === id)
+      console.log(unfollowable)
+      if (unfollowable) {
+        console.log(unfollowable, 'exists')
+        notifier(`Unfollowed ${unfollowable.username}`, true)
+        userService.unfollow(id)
+          .then((res) => {
+            setFollowing(following.filter(f => f.id !== id))
+          })
       } else {
-        userService.unfollow(memes[currentMeme].userId)
-          .then(res => console.log(res))
+        userService.follow(id)
+          .then(() => userService.getUser(id)
+            .then(res => {
+              console.log(res)
+              setFollowing([...following, res])
+              notifier(`Followed ${res.username}`, true)
+            })
+          )
       }
     }
 
@@ -158,6 +177,7 @@ const App = () => {
                 dislike={dislike}
                 user={memes[currentMeme].username}
                 changeFollow={changeFollow}
+                userId={memes[currentMeme].userId}
               />
             ) : <h2>No new memes, sorry </h2>
               : <Redirect to='/' />}
@@ -173,7 +193,8 @@ const App = () => {
             }
           </Route>
           <Route path='/profile'>
-            {user ? <ProfileView aviUpdate={aviUpdate} following={following} followers={followers} />
+            {user ? <ProfileView changeFollow={changeFollow} avi={user.avatar ? user.avatar.id : null} username={user.username}
+              aviUpdate={aviUpdate} following={following} followers={followers} />
               : <Redirect to='/' />
             }
           </Route>
