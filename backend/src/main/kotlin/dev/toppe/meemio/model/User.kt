@@ -3,11 +3,15 @@ package dev.toppe.meemio.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
+
 @Entity
 class User(
         @Column(nullable = false)
         val username: String,
 
+        /**
+         * Hashed password
+         */
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         @Column(nullable = false)
         val password: String = "",
@@ -38,18 +42,30 @@ class User(
         )
         val following: MutableSet<User> = mutableSetOf(),
 
+        /**
+         * This user's all notifications
+         */
         @ElementCollection
         var notifications: MutableList<Notification> = mutableListOf(),
 
+        /**
+         * Posts this user has liked
+         */
         @OneToMany
         var likedPosts: MutableSet<Post> = mutableSetOf(),
 
+        /**
+         * Posts this user has disliked
+         */
         @OneToMany
         var dislikedPosts: MutableSet<Post> = mutableSetOf(),
 
         @ManyToOne
         var avatar: Media? = null,
 
+        /**
+         * The unique id of this user
+         */
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0

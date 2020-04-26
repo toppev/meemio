@@ -1,0 +1,54 @@
+@use "./colors"as *;
+
+@use "./buttons"as buttons;
+@use "./menus"as menus;
+@use "./home-page"as home;
+@use "./notification-page"as notifications;
+@use "./notification"as notification;
+@use "./creation-view"as creation-view;
+
+@use "./queries"as queries;
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+#root {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  background: $black-0;
+
+}
+
+h1 {
+  margin: 0;
+  font-family: 'Dancing Script', cursive;
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, purple);
+  background-clip: text;
+  color: transparent;
+  font-size: 3em;
+}
+
+h2 {
+  margin: 0;
+  color: $white-0;
+
+}

@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  backend:
+    container_name: meemio_backend
+    restart: always
+    # Share network stack with the host to simplify things
+    network_mode: host
+    build: ./backend
+    volumes:
+      - '/meemio_uploads:/app/uploads'
+    image: meemio_backend
+  frontend:
+    container_name: meemio_frontend
+    restart: always
+    build: ./frontend
+    ports:
+      - "3000:80"
+    image: meemio_frontend

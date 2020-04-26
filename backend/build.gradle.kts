@@ -1,8 +1,10 @@
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("org.springframework.boot") version "2.3.0.M3"
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+	id("org.jetbrains.dokka") version "0.10.1"
 	kotlin("jvm") version "1.3.70"
 	kotlin("plugin.spring") version "1.3.70"
 	kotlin("plugin.jpa") version "1.3.70"
@@ -23,6 +25,7 @@ configurations {
 }
 
 repositories {
+	jcenter()
 	mavenCentral()
 	maven { url = uri("https://repo.spring.io/milestone") }
 }
@@ -33,6 +36,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -42,7 +46,7 @@ dependencies {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 	runtimeOnly("mysql:mysql-connector-java")
-	testRuntimeOnly("com.h2database:h2")
+	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.security:spring-security-test")
 }
 
@@ -54,5 +58,12 @@ tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "1.8"
+	}
+}
+
+tasks {
+	val dokka by getting(DokkaTask::class) {
+		outputFormat = "javadoc"
+		outputDirectory = "../docs"
 	}
 }

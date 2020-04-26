@@ -1,0 +1,133 @@
+{
+  "notifications": [{
+      "content": "Jason followed you"
+    },
+    {
+      "content": "Jason liked your meme"
+    },
+    {
+      "content": "Billy liked your meme"
+    },
+    {
+      "content": "Jakson liked your meme"
+    },
+    {
+      "content": "Jordan liked your meme"
+    },
+    {
+      "content": "Bob liked your meme"
+    },
+    {
+      "content": "Bob followed you"
+    },
+    {
+      "content": "Jonathan liked your meme"
+    },
+    {
+      "content": "Dolly liked your meme"
+    },
+    {
+      "content": "James liked your meme"
+    },
+    {
+      "content": "Melina liked your meme"
+    },
+    {
+      "content": "Morgan liked your meme"
+    },
+    {
+      "content": "Jason followed you"
+    },
+    {
+      "content": "Jason liked your meme"
+    },
+    {
+      "content": "Billy liked your meme"
+    },
+    {
+      "content": "Jakson liked your meme"
+    },
+    {
+      "content": "Jordan liked your meme"
+    },
+    {
+      "content": "Bob liked your meme"
+    },
+    {
+      "content": "Bob followed you"
+    },
+    {
+      "content": "Jonathan liked your meme"
+    },
+    {
+      "content": "Dolly liked your meme"
+    },
+    {
+      "content": "James liked your meme"
+    },
+    {
+      "content": "Melina liked your meme"
+    },
+    {
+      "content": "Morgan liked your meme"
+    },
+    {
+      "content": "Jason followed you"
+    },
+    {
+      "content": "Jason liked your meme"
+    },
+    {
+      "content": "Billy liked your meme"
+    },
+    {
+      "content": "Jakson liked your meme"
+    },
+    {
+      "content": "Jordan liked your meme"
+    },
+    {
+      "content": "Bob liked your meme"
+    },
+    {
+      "content": "Bob followed you"
+    },
+    {
+      "content": "Jonathan liked your meme"
+    },
+    {
+      "content": "Dolly liked your meme"
+    },
+    {
+      "content": "James liked your meme"
+    },
+    {
+      "content": "Melina liked your meme"
+    },
+    {
+      "content": "Morgan liked your meme"
+    }
+  ],
+  "memes": [{
+      "meme": "https://cloetta.studio.crasman.fi/pub/web/images/tuotekuvat/PNG-kuva_1009133_Jenkki+Pro+Junior+75g+Hra+Hakkarainen.png?c=tuote",
+      "title": "purkka"
+    },
+    {
+      "meme": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/1200px-A_small_cup_of_coffee.JPG",
+      "title": "coffee"
+    },
+    {
+      "meme": "https://previews.123rf.com/images/andreykuzmin/andreykuzmin1302/andreykuzmin130200016/17691644-tall-full-glass-of-water-isolated-on-white-clipping-path-included.jpg",
+      "title": "water"
+    },
+    {
+      "meme": "https://www.yliopistonapteekki.fi/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/2/4/2480911.jpg",
+      "title": "hand cream"
+    },
+    {
+      "meme": "https://www.asme.org/getmedia/c2c8ea5a-b690-4ba7-92bb-34bd1432862b/book_guide_hero_books.png?width=300&height=315&ext=.png",
+      "title": "book"
+    }
+  ]
+
+}

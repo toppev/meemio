@@ -1,6 +1,6 @@
 package dev.toppe.meemio.controller
 
-import dev.toppe.meemio.NotFoundException
+import dev.toppe.meemio.exception.NotFoundException
 import dev.toppe.meemio.model.Post
 import dev.toppe.meemio.model.UploadType
 import dev.toppe.meemio.repository.PostRepository
@@ -21,13 +21,13 @@ class PostController(
     data class PostResponse(val postIds: List<Long>)
 
     @PostMapping(path = ["/upload"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun uploadPost(@RequestPart files: Array<MultipartFile>): Any {
+    fun uploadPost(@RequestPart files: Array<MultipartFile>, @RequestPart title: String?): Any {
         val postIds = mutableListOf<Long>()
         files.filter { multipartFile ->
             multipartFile.contentType?.let { it.startsWith("image/") || it.startsWith("video/") } ?: false
         }.forEach {
             val media = mediaService.store(it.bytes, UploadType.POST)
-            postIds.add(postService.createPost(media).id)
+            postIds.add(postService.createPost(media, title).id)
         }
         return PostResponse(postIds)
     }
@@ -55,6 +55,6 @@ class PostController(
     }
 
     @GetMapping(path = ["/next"])
-    fun nextPosts(@RequestParam limit: Int) = postService.nextPosts(if (limit > 0) limit else 5)
+    fun nextPosts(@RequestParam limit: Int?) = postService.nextPosts(limit ?: 5)
 
 }

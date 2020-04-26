@@ -1,0 +1,22 @@
+@use "./colors"as *;
+
+.btn {
+  border-radius: 4em;
+  background: transparent;
+  border: 0;
+  width: 4em;
+  height: 4em;
+
+  svg {
+    height: 3em;
+    width: 3em;
+  }
+}
+
+.btn-like {
+  color: $like-green;
+}
+
+.btn-dislike {
+  color: $dislike-red;
+}

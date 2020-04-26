@@ -21,6 +21,12 @@ class UserController(
     @PostMapping(path = ["/register"])
     fun register(@RequestBody body: CredentialsBody) = userService.createAccount(body.username, body.password)
 
+    /**
+     * Just returns the user, use Basic Authentication to login
+     */
+    @RequestMapping(method = [RequestMethod.GET, RequestMethod.POST], path = ["/login"])
+    fun login() = userService.getSelf()
+
     @PostMapping(path = ["/{userId}/follow"])
     fun followUser(@PathVariable userId: Long) = userService.follow(userId)
 
@@ -29,7 +35,7 @@ class UserController(
 
     @PostMapping(path = ["/avatar"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun setAvatar(@RequestPart file: MultipartFile): Media? {
-        if(file.contentType?.let { it.startsWith("image/") || it.startsWith("video/") } == true) {
+        if (file.contentType?.let { it.startsWith("image/") || it.startsWith("video/") } == true) {
             val media = mediaService.store(file.bytes, UploadType.AVATAR)
             userService.setAvatar(media)
             return media

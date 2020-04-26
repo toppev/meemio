@@ -13,7 +13,7 @@ import javax.transaction.Transactional
 import org.springframework.security.core.userdetails.User as SimpleUserDetails
 
 @Service
-class UserDetailsServiceImpl(private val userRepository: UserRepository) : UserDetailsService {
+class UserDetailsServiceImpl(val userRepository: UserRepository) : UserDetailsService {
 
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {

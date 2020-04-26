@@ -1,0 +1,7 @@
+dev.toppe.meemio
+dev.toppe.meemio.config
+dev.toppe.meemio.controller
+dev.toppe.meemio.exception
+dev.toppe.meemio.model
+dev.toppe.meemio.repository
+dev.toppe.meemio.service

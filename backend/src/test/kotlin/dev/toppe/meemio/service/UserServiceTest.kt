@@ -1,5 +1,6 @@
 package dev.toppe.meemio.service
 
+import dev.toppe.meemio.exception.InvalidUsernameException
 import dev.toppe.meemio.model.Notification
 import dev.toppe.meemio.model.NotificationActionType
 import dev.toppe.meemio.model.User
@@ -64,4 +65,31 @@ internal class UserServiceTest(
         assertTrue(userRepository.findById(follower.id).get().following.isEmpty())
         assertTrue(userRepository.findById(toFollow.id).get().followers.isEmpty())
     }
+
+    @Test
+    @Transactional
+    fun validUsernames() {
+        val pw = "fakepassword321"
+        userService.createAccount("123", pw)
+        userService.createAccount("asd", pw)
+        userService.createAccount("123asd", pw)
+        userService.createAccount("1_A", pw)
+    }
+
+    @Test
+    @Transactional
+    fun invalidUsernames() {
+        val pw = "fakepassword321"
+        assertThrows(InvalidUsernameException::class.java) {
+            userService.createAccount("12", pw)
+        }
+        assertThrows(InvalidUsernameException::class.java) {
+            userService.createAccount("%&#", pw)
+        }
+        assertThrows(InvalidUsernameException::class.java) {
+            userService.createAccount("asd123#", pw)
+        }
+    }
+
+
 }

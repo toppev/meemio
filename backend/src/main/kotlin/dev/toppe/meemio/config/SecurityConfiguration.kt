@@ -3,7 +3,6 @@ package dev.toppe.meemio.config
 import dev.toppe.meemio.service.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -12,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.web.cors.CorsConfiguration
 
 
 @Configuration
@@ -25,18 +26,26 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
 
     override fun configure(http: HttpSecurity) {
         http
+                .cors().configurationSource {
+                    CorsConfiguration().apply {
+                        allowedOrigins = listOf("http://localhost:3000")
+                        allowedMethods = listOf("*")
+                        allowedHeaders = listOf("*")
+                        allowCredentials = true
+                    }
+                }
+                .and()
+                .csrf { it.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) }
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/users/**").permitAll()
-                .antMatchers("/users/**").authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .rememberMe()
-                .alwaysRemember(true)
                 // Remember for 2 weeks (default)
                 //.tokenValiditySeconds()
-                .and()
-                .csrf().disable()
+                .alwaysRemember(true)
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -44,7 +53,6 @@ class SecurityConfiguration(private val userDetailsService: UserDetailsServiceIm
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder() = BCryptPasswordEncoder() as PasswordEncoder
+
 }
