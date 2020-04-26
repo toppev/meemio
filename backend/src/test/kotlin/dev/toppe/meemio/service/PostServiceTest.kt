@@ -2,6 +2,7 @@ package dev.toppe.meemio.service
 
 import dev.toppe.meemio.model.Post
 import dev.toppe.meemio.model.User
+import dev.toppe.meemio.repository.PostRepository
 import dev.toppe.meemio.repository.UserRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -11,7 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 internal class PostServiceTest(
         @Autowired val postService: PostService,
-        @Autowired val userRepository: UserRepository
+        @Autowired val userRepository: UserRepository,
+        @Autowired val postRepository: PostRepository
 ) {
 
     @Test
@@ -50,6 +52,7 @@ internal class PostServiceTest(
         val postOwner = User("user2")
         userRepository.save(postOwner)
         val post = Post(postOwner)
+        postRepository.save(post)
         postService.likePost(post, user)
         postService.dislikePost(post, user)
         assertEquals(0, post.likes)
@@ -63,6 +66,7 @@ internal class PostServiceTest(
         val postOwner = User("user2")
         userRepository.save(postOwner)
         val post = Post(postOwner)
+        postRepository.save(post)
         postService.likePost(post, user)
         postService.removeReaction(post, user)
         assertEquals(0, post.likes)
