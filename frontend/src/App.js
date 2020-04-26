@@ -208,7 +208,7 @@ const App = () => {
             <Login notifier={notifier} register={register} login={login} />
           </Route>
         </Switch>
-        {user ? <MobileMenu unread={!notifications.every(n => n.hasRead === true)} route={route} />
+        {user ? <MobileMenu unread={notifications[0] ? !notifications.every(n => n.hasRead === true) : false} route={route} />
           : null}
       </div>
     </div>
