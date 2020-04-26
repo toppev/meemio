@@ -251,6 +251,8 @@ input[type=file] {
 
 #change-icon {
   padding: 5%;
+  width: auto;
+  display: inline;
 }
 
 #profile {

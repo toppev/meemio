@@ -1,14 +1,14 @@
 import React from 'react'
 
-import { IoIosNotifications, IoIosHome, IoIosPerson, IoIosAddCircle } from 'react-icons/io'
+import { IoIosNotifications, IoIosHome, IoIosPerson, IoIosAddCircle, IoIosNotificationsOutline } from 'react-icons/io'
 import { Button } from './Button'
 
-const MobileMenu = ({ route, }) => {
+const MobileMenu = ({ route, unread }) => {
 
   return (
     <div className='mobile-specific' id='mobile-navbar'>
       <Button
-        content={<IoIosNotifications />}
+        content={unread ? <IoIosNotifications /> : <IoIosNotificationsOutline />}
         onClick={() => route('/notifications')}
         type='menu-element notif-route-btn'
       />

@@ -65,7 +65,7 @@ const App = () => {
         const followingAccoutns = await userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
         setFollowers(followingAccoutns)
         const noti = await notificationService.getAll()
-        console.log(noti)
+        setNotifications(noti)
       } else {
         if (!initialLoad) notifier('Login failed', false)
       }
@@ -105,6 +105,12 @@ const App = () => {
     } else {
       setUser({ ...user, dislikes: [memes[currentMeme].id] })
     }
+  }
+
+  const readAll = () => {
+    notificationService.readAll()
+    const newAr = notifications.map(n => ({ ...n, hasRead: true }))
+    setNotifications(newAr)
   }
 
   const notifier = (message, successful) => {
@@ -188,7 +194,7 @@ const App = () => {
             }
           </Route>
           <Route path="/notifications">
-            {user ? <NotificationView notifications={notifications} />
+            {user ? <NotificationView readAll={readAll} notifications={notifications} />
               : <Redirect to='/' />
             }
           </Route>
@@ -202,7 +208,7 @@ const App = () => {
             <Login notifier={notifier} register={register} login={login} />
           </Route>
         </Switch>
-        {user ? <MobileMenu route={route} />
+        {user ? <MobileMenu unread={!notifications.every(n => n.hasRead === true)} route={route} />
           : null}
       </div>
     </div>
