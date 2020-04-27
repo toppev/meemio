@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-
-const NotificationView = (notifications) => {
-
+const NotificationView = ({ notifications, readAll }) => {
+  useEffect(() => {
+    readAll()
+  }, [])
   if (notifications[0]) {
     return (
       <div id='notification-container'>
-        {notifications.map((n, i) => <div className='notification-alert' key={i} >{n.content}</div>)}
+        {notifications.map((n, i) => <div className='notification-alert' key={i} >{n.message}</div>)}
       </div>
     )
   }

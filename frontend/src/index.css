@@ -94,6 +94,12 @@
   align-items: center;
 }
 
+.title-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .title-holder p {
   color: rgba(255, 255, 255, 0.85);
 }
@@ -102,6 +108,33 @@ img {
   width: auto;
   height: 100%;
   margin: 0;
+}
+
+.for-ani {
+  height: 100%;
+  width: 100%;
+}
+
+.transition-enter {
+  opacity: 0.01;
+  transform: translate(0, -10px);
+}
+
+.transition-enter-active {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition: all 300ms ease-in;
+}
+
+.transition-exit {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.transition-exit-active {
+  opacity: 0.01;
+  transform: translate(0, 10px);
+  transition: all 300ms ease-in;
 }
 
 #notification-container {
@@ -251,6 +284,7 @@ input[type=file] {
 
 #change-icon {
   padding: 5%;
+  width: auto;
 }
 
 #profile {
@@ -264,6 +298,7 @@ input[type=file] {
 #profile svg {
   height: 2em;
   width: 2em;
+  margin-left: 1em;
 }
 
 .profile-pane {
