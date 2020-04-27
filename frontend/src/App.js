@@ -86,19 +86,16 @@ const App = () => {
 
   const like = () => {
     memeService.like(memes[currentMeme].id)
-      .then(res => console.log(res))
     setCurrentMeme(currentMeme + 1)
     if (user.likes) {
       setUser({ ...user, likes: [...user.likes, memes[currentMeme].id] })
     } else {
       setUser({ ...user, likes: [memes[currentMeme].id] })
     }
-    console.log(following)
   }
 
   const dislike = () => {
     memeService.dislike(memes[currentMeme].id)
-      .then(res => console.log(res))
     setCurrentMeme(currentMeme + 1)
     if (user.dislikes) {
       setUser({ ...user, dislikes: [...user.dislikes, memes[currentMeme].id] })
@@ -131,34 +128,23 @@ const App = () => {
     }
   }
 
-  const changeFollow = (id) => {
+  const changeFollow = async (id) => {
     if (!following[0]) {
-      userService.follow(id)
-        .then(() => userService.getUser(id)
-          .then(res => {
-            console.log(res)
-            setFollowing([res])
-            notifier(`Followed ${res.username}`, true)
-          }))
+      await userService.follow(id)
+      const justFollowed = await userService.getUser(id)
+      setFollowing([justFollowed])
+      notifier(`Followed ${justFollowed.username}`, true)
     } else {
       const unfollowable = following.find(u => u.id === id)
-      console.log(unfollowable)
       if (unfollowable) {
-        console.log(unfollowable, 'exists')
         notifier(`Unfollowed ${unfollowable.username}`, true)
         userService.unfollow(id)
-          .then((res) => {
-            setFollowing(following.filter(f => f.id !== id))
-          })
+        setFollowing(following.filter(f => f.id !== id))
       } else {
         userService.follow(id)
-          .then(() => userService.getUser(id)
-            .then(res => {
-              console.log(res)
-              setFollowing([...following, res])
-              notifier(`Followed ${res.username}`, true)
-            })
-          )
+        const justFollowed = await userService.getUser(id)
+        setFollowing([...following, justFollowed])
+        notifier(`Followed ${justFollowed.username}`, true)
       }
     }
 
