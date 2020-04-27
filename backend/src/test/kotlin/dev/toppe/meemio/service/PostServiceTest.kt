@@ -37,6 +37,7 @@ internal class PostServiceTest(
         val otherUser = User("user2")
         userRepository.save(otherUser)
         val post = Post(user)
+        postRepository.save(post)
         postService.likePost(post, otherUser)
         assertEquals(1, post.likes)
         postService.likePost(post, otherUser)

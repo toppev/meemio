@@ -66,8 +66,7 @@ class UserService(
      */
     fun follow(toFollowId: Long, user: User = getSelf().get()) {
         val toFollow = userRepository.findById(toFollowId).orElseThrow { NotFoundException("user $toFollowId") }
-        if(!user.following.any { it.id == toFollowId }) {
-            user.following.add(toFollow)
+        if(user.following.add(toFollow)) {
             userRepository.save(user)
             toFollow.followers.add(user)
             addNotification(toFollow, "${user.username} started following you!", NotificationActionType.PROFILE, user.id)
@@ -81,10 +80,10 @@ class UserService(
      */
     fun unfollow(unfollowId: Long, user: User = getSelf().get()) {
         userRepository.findById(unfollowId).orElseThrow { NotFoundException("user $unfollowId") }.let { unfollow ->
-            if (user.following.removeIf {it.id == unfollowId}) {
+            if (user.following.remove(unfollow)) {
                 userRepository.save(user)
             }
-            if (unfollow.followers.removeIf { it.id == user.id }) {
+            if (unfollow.followers.remove(user)) {
                 userRepository.save(unfollow)
             }
         }
