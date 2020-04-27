@@ -62,8 +62,8 @@ const App = () => {
         notifier(`Logged in as ${they.username}`, true)
         const followedAccounts = await userService.getFollowing(they._links.user.href.substring(they._links.user.href.length - 1))
         setFollowing(followedAccounts._embedded.users)
-        const followingAccoutns = await userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
-        setFollowers(followingAccoutns._embedded.users)
+        const followingAccounts = await userService.getFollowers(they._links.user.href.substring(they._links.user.href.length - 1))
+        setFollowers(followingAccounts._embedded.users)
         const noti = await notificationService.getAll()
         setNotifications(noti)
       } else {
@@ -84,7 +84,7 @@ const App = () => {
     }
   }
 
-  const like = async () => {
+  const like = () => {
     memeService.like(memes[currentMeme].id)
     setCurrentMeme(currentMeme + 1)
     if (user.likes) {
@@ -93,12 +93,11 @@ const App = () => {
       setUser({ ...user, likes: [memes[currentMeme].id] })
     }
     if (currentMeme >= memes.length - 2) {
-      const meymes = await memeService.getMemes()
-      setMemes([...memes, ...meymes])
+      getNewMemes()
     }
   }
 
-  const dislike = async () => {
+  const dislike = () => {
     memeService.dislike(memes[currentMeme].id)
     setCurrentMeme(currentMeme + 1)
     if (user.dislikes) {
@@ -107,9 +106,21 @@ const App = () => {
       setUser({ ...user, dislikes: [memes[currentMeme].id] })
     }
     if (currentMeme === memes.length - 2) {
-      const meymes = await memeService.getMemes()
-      setMemes([...memes, ...meymes])
+      getNewMemes()
     }
+  }
+
+  const getNewMemes = async () => {
+    const memeIds = memes.map(mem => mem.id)
+    console.log('IDs', memeIds)
+    const meymes = await memeService.getMemes()
+    console.log('New memes', meymes)
+    const filteredMeymes = meymes.filter(mem => {
+      const a = 1 + memeIds.indexOf(mem.id)
+      return !a
+    })
+    console.log('Filtered memes', filteredMeymes)
+    setMemes([...memes, ...filteredMeymes])
   }
 
   const readAll = () => {
