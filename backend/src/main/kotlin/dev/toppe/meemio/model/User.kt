@@ -51,13 +51,13 @@ class User(
         /**
          * Posts this user has liked
          */
-        @OneToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         var likedPosts: MutableSet<Post> = mutableSetOf(),
 
         /**
          * Posts this user has disliked
          */
-        @OneToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         var dislikedPosts: MutableSet<Post> = mutableSetOf(),
 
         @ManyToOne
