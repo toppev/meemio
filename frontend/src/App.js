@@ -84,7 +84,7 @@ const App = () => {
     }
   }
 
-  const like = () => {
+  const like = async () => {
     memeService.like(memes[currentMeme].id)
     setCurrentMeme(currentMeme + 1)
     if (user.likes) {
@@ -92,15 +92,23 @@ const App = () => {
     } else {
       setUser({ ...user, likes: [memes[currentMeme].id] })
     }
+    if (currentMeme >= memes.length - 2) {
+      const meymes = await memeService.getMemes()
+      setMemes([...memes, ...meymes])
+    }
   }
 
-  const dislike = () => {
+  const dislike = async () => {
     memeService.dislike(memes[currentMeme].id)
     setCurrentMeme(currentMeme + 1)
     if (user.dislikes) {
       setUser({ ...user, dislikes: [...user.dislikes, memes[currentMeme].id] })
     } else {
       setUser({ ...user, dislikes: [memes[currentMeme].id] })
+    }
+    if (currentMeme === memes.length - 2) {
+      const meymes = await memeService.getMemes()
+      setMemes([...memes, ...meymes])
     }
   }
 
