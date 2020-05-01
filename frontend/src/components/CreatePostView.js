@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { CreatePostForm } from './CreatePostForm'
 import { Button } from './Button'
 
-import { uploadMeme } from '../services/memes'
+import { addMeme } from '../actions/userActions'
 
 const CreatePostView = ({ notifier, setUser }) => {
 
   const [meme, setMeme] = useState(null)
   const [title, setTitle] = useState('')
+
+  const dispatch = useDispatch()
 
   const handleFileChange = (e) => {
     e.preventDefault()
@@ -26,13 +29,12 @@ const CreatePostView = ({ notifier, setUser }) => {
     setTitle('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const formData = new FormData()
     formData.append('files', meme)
     formData.append('title', title)
-    uploadMeme(formData)
-      .then(res => setUser(res))
+    dispatch(addMeme(formData))
     notifier('Meme uploaded', true)
     setMeme(null)
     setTitle('')

@@ -16,7 +16,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .title-holder {
@@ -36,29 +35,6 @@ img {
   margin: 0;
 }
 
-.for-ani {
-  height: 100%;
-  width: 100%;
-}
-
-.transition-enter {
-  opacity: 0.01;
-  transform: translate(0, -10px);
-}
-
-.transition-enter-active {
-  opacity: 1;
-  transform: translate(0, 0);
-  transition: all 300ms ease-in;
-}
-
-.transition-exit {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.transition-exit-active {
-  opacity: 0.01;
-  transform: translate(0, 10px);
-  transition: all 300ms ease-in;
+.not-active {
+  display: none;
 }
