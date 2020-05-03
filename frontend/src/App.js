@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Switch, Route, useHistory, Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -11,70 +11,50 @@ import { CreatePostView } from './components/CreatePostView'
 import { ProfileView } from './components/ProfileView'
 import { Login } from './components/Login'
 
-import { userService } from './services/user'
+import { useInterval } from './hooks/useInterval'
 
-import { followAction, unfollowAction } from './actions/followAction'
-import { readNotifications } from './actions/notificationsActions'
+import { followAction, unfollowAction, initFollowers } from './actions/followAction'
+import { readNotifications, getNotifications } from './actions/notificationsActions'
+import { setNotification } from './actions/notificationAction'
 
 import './index.css'
 
 const App = () => {
 
-  const [notification, setNotification] = useState({
-    message: null,
-    successful: true,
-  })
-
   const dispatch = useDispatch()
   const history = useHistory()
-  const { user, followers, following, notifications } = useSelector(state => state)
+  const { user, following, notifications, notification } = useSelector(state => state)
+
+  useInterval(() => {
+    dispatch(getNotifications())
+    if (1 + notifications.findIndex(n => n.hasRead === false && n.type === 1)) {
+      dispatch(initFollowers(user.id))
+    }
+  })
 
   const route = dest => {
     history.push(dest)
-
     if (dest === '/notifications') {
       dispatch(readNotifications())
     }
   }
-
-  const notifier = (message, successful) => {
-    setNotification({ message, successful })
-    setTimeout(() => setNotification({
-      message: null,
-      successful: true
-    }), 3000)
-  }
-
-  const aviUpdate = async formData => {
-    try {
-      const res = await userService.aviUpdate(formData)
-      if (res) notifier('Your avatar has been updated', true)
-    } catch (err) {
-      console.error(err)
-      notifier('There was an error updating your avatar', false)
-    }
-  }
-
   const changeFollow = async id => {
     const unfollowable = following.find(u => u.id === id)
     if (unfollowable) {
-      notifier(`Unfollowed ${unfollowable.username}`, true)
+      dispatch(setNotification(`Unfollowed ${unfollowable.username}`, true))
       dispatch(unfollowAction(id))
     } else {
-      notifier(`Followed ${'mike'}`, true)
+      dispatch(setNotification(`Followed ${'mike'}`, true))
       dispatch(followAction(id))
     }
-
   }
 
   return (
     <div id="app-wrapper">
-      {notification.message ? (
-        <Notification
-          success={notification.successful}
-          message={notification.message}
-        />
-      ) : null}
+      <Notification
+        success={notification.successful}
+        message={notification.message}
+      />
       <div id="app-container">
         <Header />
         <Switch>
@@ -84,7 +64,7 @@ const App = () => {
               : <Redirect to='/' />}
           </Route>
           <Route path="/create">
-            {user ? <CreatePostView notifier={notifier} />
+            {user ? <CreatePostView />
               : <Redirect to='/' />
             }
           </Route>
@@ -94,13 +74,14 @@ const App = () => {
             }
           </Route>
           <Route path='/profile'>
-            {user ? <ProfileView changeFollow={changeFollow} avi={user.avatar ? user.avatar.id : null} username={user.username}
-              aviUpdate={aviUpdate} following={following} followers={followers} />
+            {user ? <ProfileView changeFollow={changeFollow} avi={user.avatar ? user.avatar.id : null}
+              username={user.username}
+            />
               : <Redirect to='/' />
             }
           </Route>
           <Route path='/'>
-            <Login notifier={notifier} route={route} />
+            <Login route={route} />
           </Route>
         </Switch>
         {user ? <MobileMenu unread={notifications[0] ? !notifications.every(n => n.hasRead === true) : false} route={route} />

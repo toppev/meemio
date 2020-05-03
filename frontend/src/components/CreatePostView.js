@@ -5,8 +5,9 @@ import { CreatePostForm } from './CreatePostForm'
 import { Button } from './Button'
 
 import { addMeme } from '../actions/userActions'
+import { setNotification } from '../actions/notificationAction'
 
-const CreatePostView = ({ notifier, setUser }) => {
+const CreatePostView = () => {
 
   const [meme, setMeme] = useState(null)
   const [title, setTitle] = useState('')
@@ -35,7 +36,7 @@ const CreatePostView = ({ notifier, setUser }) => {
     formData.append('files', meme)
     formData.append('title', title)
     dispatch(addMeme(formData))
-    notifier('Meme uploaded', true)
+    dispatch(setNotification('Meme uploaded', true))
     setMeme(null)
     setTitle('')
   }

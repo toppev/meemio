@@ -8,6 +8,8 @@ const userReducer = (state = null, action) => {
       return { ...state, likes: [...(state.likes || []), action.payload] }
     case 'DISLIKE':
       return { ...state, dislikes: [...(state.dislikes || []), action.payload] }
+    case 'AVI_UPDATE':
+      return { ...state, avatar: action.payload }
     default:
       return state
   }

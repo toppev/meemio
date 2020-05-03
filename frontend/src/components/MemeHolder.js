@@ -1,7 +1,7 @@
 import React from 'react'
 
 const MemeHolder = ({ id, title, username, userId, changeFollow, active }) =>
-  <div className={`${active ? '' : 'not-active'}`} >
+  <div className={`memo-holder ${active ? 'active' : ''}`} >
     <div className='media-holder'>
       <img src={`/media/${id}`} alt='well fuck' />
     </div>

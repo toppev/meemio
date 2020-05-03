@@ -5,8 +5,9 @@ import { useLogin } from '../hooks/loginHook'
 import { userService } from '../services/user'
 import { initUser } from '../actions/userActions'
 import { initFollowers, initFollowing } from '../actions/followAction'
+import { setNotification } from '../actions/notificationAction'
 
-const Login = ({ notifier, route }) => {
+const Login = ({ route }) => {
 
   const loginForm = useLogin()
   const [initialLoad, setInitialLoad] = useState(true)
@@ -17,7 +18,6 @@ const Login = ({ notifier, route }) => {
     setInitialLoad(false)
   }, [])
 
-
   const handleLogin = (e) => {
     e.preventDefault()
     login(loginForm.username, loginForm.password)
@@ -27,7 +27,7 @@ const Login = ({ notifier, route }) => {
   const handleRegister = (e) => {
     e.preventDefault()
     if (loginForm.createPassword !== loginForm.checkPassword) {
-      notifier('Passwords different')
+      dispatch(setNotification('Passwords different', false))
     }
     register(loginForm.createUsername, loginForm.createPassword)
     loginForm.nullAll()
@@ -40,10 +40,10 @@ const Login = ({ notifier, route }) => {
         dispatch(initUser(they))
         dispatch(initFollowers(they.id))
         dispatch(initFollowing(they.id))
-        notifier(`Logged in as ${they.username}`, true)
+        dispatch(setNotification(`Logged in as ${they.username}`, true))
         route('/home')
       } else {
-        if (!initialLoad) notifier('Login failed', false)
+        if (!initialLoad) dispatch(setNotification('Login failed', false))
       }
     } catch (error) {
       console.error(error)

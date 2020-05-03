@@ -18,6 +18,27 @@
   align-items: center;
 }
 
+.meme-holder {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+.meme-holder.active {
+  display: block;
+  animation: fade-in 0.4s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .title-holder {
   display: flex;
   flex-direction: column;
@@ -33,8 +54,4 @@ img {
   width: auto;
   height: 100%;
   margin: 0;
-}
-
-.not-active {
-  display: none;
 }

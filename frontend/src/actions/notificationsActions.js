@@ -1,8 +1,13 @@
 import { notificationService } from "../services/notifications"
 
 const getNotifications = () => {
-  return {
-    type: 'INIT_NOTIFICATIONS'
+  return async dispatch => {
+    const notifications = await notificationService.getAll()
+    console.log('from action', notifications)
+    dispatch({
+      type: 'INIT_NOTIFICATIONS',
+      payload: notifications
+    })
   }
 }
 const readNotifications = () => {
