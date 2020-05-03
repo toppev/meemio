@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useLogin } from '../hooks/loginHook'
 
-const Login = ({ login, register, notifier }) => {
+import { userService } from '../services/user'
+import { initUser } from '../actions/userActions'
+import { initFollowers, initFollowing } from '../actions/followAction'
+import { setNotification } from '../actions/notificationAction'
+
+const Login = ({ route }) => {
+
   const loginForm = useLogin()
+  const [initialLoad, setInitialLoad] = useState(true)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    login()
+    setInitialLoad(false)
+  }, [])
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -13,10 +27,36 @@ const Login = ({ login, register, notifier }) => {
   const handleRegister = (e) => {
     e.preventDefault()
     if (loginForm.createPassword !== loginForm.checkPassword) {
-      notifier('Passwords different')
+      dispatch(setNotification('Passwords different', false))
     }
     register(loginForm.createUsername, loginForm.createPassword)
     loginForm.nullAll()
+  }
+
+  const login = async (username, password) => {
+    try {
+      const they = await userService.login(username, password)
+      if (they) {
+        dispatch(initUser(they))
+        dispatch(initFollowers(they.id))
+        dispatch(initFollowing(they.id))
+        dispatch(setNotification(`Logged in as ${they.username}`, true))
+        route('/home')
+      } else {
+        if (!initialLoad) dispatch(setNotification('Login failed', false))
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const register = async (username, password) => {
+    try {
+      await userService.register(username, password)
+      login(username, password)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

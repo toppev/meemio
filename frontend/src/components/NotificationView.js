@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-const NotificationView = ({ notifications, readAll }) => {
-  useEffect(() => {
-    readAll()
-  }, [])
+const NotificationView = ({ notifications, }) => {
+
   if (notifications[0]) {
     return (
       <div id='notification-container'>

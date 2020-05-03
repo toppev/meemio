@@ -94,6 +94,25 @@
   align-items: center;
 }
 
+.meme-holder {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+.meme-holder.active {
+  display: block;
+  animation: fade-in 0.4s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .title-holder {
   display: flex;
   flex-direction: column;
@@ -108,33 +127,6 @@ img {
   width: auto;
   height: 100%;
   margin: 0;
-}
-
-.for-ani {
-  height: 100%;
-  width: 100%;
-}
-
-.transition-enter {
-  opacity: 0.01;
-  transform: translate(0, -10px);
-}
-
-.transition-enter-active {
-  opacity: 1;
-  transform: translate(0, 0);
-  transition: all 300ms ease-in;
-}
-
-.transition-exit {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.transition-exit-active {
-  opacity: 0.01;
-  transform: translate(0, 10px);
-  transition: all 300ms ease-in;
 }
 
 #notification-container {
@@ -163,10 +155,13 @@ img {
 }
 
 .notification {
+  transition-timing-function: ease-in;
+  transition-duration: 0.3s;
+  opacity: 0;
   z-index: 2;
   position: absolute;
-  width: 80%;
-  height: 10%;
+  width: 60%;
+  height: 8%;
   margin-left: -153px;
   left: 50%;
   top: 10%;
@@ -175,16 +170,22 @@ img {
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0px 0px 40px -5px rgba(0, 0, 0, 0.73);
   border-radius: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.notification.active {
+  opacity: 1;
 }
 
 @media (max-width: 375px) {
   .notification {
-    margin-left: -40%;
+    margin-left: -30%;
   }
 }
 .check-circle-container {
-  height: 3em;
-  width: 3em;
+  height: 2.5em;
+  width: 2.5em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -296,6 +297,11 @@ input[type=file] {
   border-bottom: 1px solid rgba(255, 255, 255, 0.8);
 }
 #profile svg {
+  height: 2em;
+  width: 2em;
+  margin-left: 1em;
+}
+#profile img {
   height: 2em;
   width: 2em;
   margin-left: 1em;

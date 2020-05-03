@@ -12,7 +12,7 @@ const Notification = ({ success, message }) => {
     : <IoIosCloseCircle />
 
   return (
-    <div className={`notification ${classname}`} >
+    <div className={`notification ${classname} ${message ? 'active' : ''}`} >
       <div className='check-circle-container'>
         {icon}
       </div>

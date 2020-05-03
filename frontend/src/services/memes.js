@@ -43,4 +43,4 @@ const memeService = {
   dislike
 }
 
-export { memeService, uploadMeme }
+export { memeService, uploadMeme, getMemes }

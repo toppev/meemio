@@ -16,7 +16,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
+.meme-holder {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+.meme-holder.active {
+  display: block;
+  animation: fade-in 0.4s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .title-holder {
@@ -34,31 +54,4 @@ img {
   width: auto;
   height: 100%;
   margin: 0;
-}
-
-.for-ani {
-  height: 100%;
-  width: 100%;
-}
-
-.transition-enter {
-  opacity: 0.01;
-  transform: translate(0, -10px);
-}
-
-.transition-enter-active {
-  opacity: 1;
-  transform: translate(0, 0);
-  transition: all 300ms ease-in;
-}
-
-.transition-exit {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.transition-exit-active {
-  opacity: 0.01;
-  transform: translate(0, 10px);
-  transition: all 300ms ease-in;
 }
