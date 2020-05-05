@@ -11,7 +11,7 @@ import { nextMeme } from '../actions/currentMemeAction'
 
 const ContentWrapper = ({ changeFollow }) => {
 
-  const memeIndex = useSelector(state => state.memeIndex)
+  const { memeIndex, following } = useSelector(state => state)
   const [memes, setMemes] = useState([])
   const currentMeme = memes[memeIndex]
 
@@ -49,11 +49,15 @@ const ContentWrapper = ({ changeFollow }) => {
     setMemes([...memes, ...filteredMeymes])
   }
 
+  const doesFollow = () => {
+    const yes = 1 + following.findIndex(f => f.id === currentMeme.userId)
+    return Boolean(yes)
+  }
 
   return (
     <div className='content-wrapper' >
       {currentMeme ? memes.map((meme, i) => <MemeHolder key={i} active={i === memeIndex ? true : false}
-        changeFollow={changeFollow} {...meme} />)
+        changeFollow={changeFollow} {...meme} follows={doesFollow()} />)
         : <h2>Sorry no new memes</h2>}
       <div className='mobile-specific'>
         <Button onClick={like} type='btn-like' content={<IoIosThumbsUp />} />

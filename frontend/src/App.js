@@ -38,14 +38,14 @@ const App = () => {
       dispatch(readNotifications())
     }
   }
-  const changeFollow = async id => {
+  const changeFollow = async (id, followedUsername) => {
     const unfollowable = following.find(u => u.id === id)
     if (unfollowable) {
       dispatch(setNotification(`Unfollowed ${unfollowable.username}`, true))
       dispatch(unfollowAction(id))
     } else {
-      dispatch(setNotification(`Followed ${'mike'}`, true))
       dispatch(followAction(id))
+      dispatch(setNotification(`Followed ${followedUsername}`, true))
     }
   }
 
